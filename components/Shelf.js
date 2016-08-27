@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from 'react'
 
-export default class Posts extends Component {
+export default class Shelf extends Component {
   render() {
     return (
       <ul>
-        {this.props.posts.map((post, i) =>
+        {this.props.products.map((post, i) =>
           <li key={i}>
             <img src={post.picture} width={100} />
             <p>
@@ -17,6 +17,6 @@ export default class Posts extends Component {
   }
 }
 
-Posts.propTypes = {
-  posts: PropTypes.array.isRequired
+Shelf.propTypes = {
+  products: PropTypes.array.isRequired
 }

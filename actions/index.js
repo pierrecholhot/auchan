@@ -1,64 +1,64 @@
 import fetch from 'isomorphic-fetch'
 
-export const REQUEST_POSTS = 'REQUEST_POSTS'
-export const RECEIVE_POSTS = 'RECEIVE_POSTS'
+export const REQUEST_SHELF = 'REQUEST_SHELF'
+export const RECEIVE_SHELF = 'RECEIVE_SHELF'
 export const SELECT_REDDIT = 'SELECT_REDDIT'
 export const INVALIDATE_REDDIT = 'INVALIDATE_REDDIT'
 
-export function selectReddit(reddit) {
+export function selectID(id) {
   return {
     type: SELECT_REDDIT,
-    reddit
+    id
   }
 }
 
-export function invalidateReddit(reddit) {
+export function invalidateID(id) {
   return {
     type: INVALIDATE_REDDIT,
-    reddit
+    id
   }
 }
 
-function requestPosts(reddit) {
+function requestShelf(id) {
   return {
-    type: REQUEST_POSTS,
-    reddit
+    type: REQUEST_SHELF,
+    id
   }
 }
 
-function receivePosts(reddit, json) {
+function receiveShelf(id, json) {
   return {
-    type: RECEIVE_POSTS,
-    reddit,
-    posts: json.products,
+    type: RECEIVE_SHELF,
+    id,
+    shelf: json.products,
     receivedAt: Date.now()
   }
 }
 
-function fetchPosts(reddit) {
+function fetchShelf(id) {
   return dispatch => {
-    dispatch(requestPosts(reddit))
-    return fetch(`https://beta.auchandirect.fr/backend/api/v2/shelves/${reddit}?shop_id=11223`)
+    dispatch(requestShelf(id))
+    return fetch(`https://beta.auchandirect.fr/backend/api/v2/shelves/${id}?shop_id=11223`)
       .then(response => response.json())
-      .then(json => dispatch(receivePosts(reddit, json)))
+      .then(json => dispatch(receiveShelf(id, json)))
   }
 }
 
-function shouldFetchPosts(state, reddit) {
-  const posts = state.postsByReddit[reddit]
-  if (!posts) {
+function shouldFetchShelf(state, id) {
+  const shelf = state.shelves[id]
+  if (!shelf) {
     return true
   }
-  if (posts.isFetching) {
+  if (shelf.isFetching) {
     return false
   }
-  return posts.didInvalidate
+  return shelf.didInvalidate
 }
 
-export function fetchPostsIfNeeded(reddit) {
+export function fetchShelfIfNeeded(id) {
   return (dispatch, getState) => {
-    if (shouldFetchPosts(getState(), reddit)) {
-      return dispatch(fetchPosts(reddit))
+    if (shouldFetchShelf(getState(), id)) {
+      return dispatch(fetchShelf(id))
     }
   }
 }

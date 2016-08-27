@@ -1,19 +1,19 @@
 import { combineReducers } from 'redux'
 import {
   SELECT_REDDIT, INVALIDATE_REDDIT,
-  REQUEST_POSTS, RECEIVE_POSTS
+  REQUEST_SHELF, RECEIVE_SHELF
 } from '../actions'
 
-function selectedReddit(state = '23', action) {
+function selectedID(state = '23', action) {
   switch (action.type) {
     case SELECT_REDDIT:
-      return action.reddit
+      return action.id
     default:
       return state
   }
 }
 
-function posts(state = {
+function shelf(state = {
   isFetching: false,
   didInvalidate: false,
   items: []
@@ -23,16 +23,16 @@ function posts(state = {
       return Object.assign({}, state, {
         didInvalidate: true
       })
-    case REQUEST_POSTS:
+    case REQUEST_SHELF:
       return Object.assign({}, state, {
         isFetching: true,
         didInvalidate: false
       })
-    case RECEIVE_POSTS:
+    case RECEIVE_SHELF:
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        items: action.posts,
+        items: action.shelf,
         lastUpdated: action.receivedAt
       })
     default:
@@ -40,13 +40,13 @@ function posts(state = {
   }
 }
 
-function postsByReddit(state = { }, action) {
+function shelves(state = {}, action) {
   switch (action.type) {
     case INVALIDATE_REDDIT:
-    case RECEIVE_POSTS:
-    case REQUEST_POSTS:
+    case RECEIVE_SHELF:
+    case REQUEST_SHELF:
       return Object.assign({}, state, {
-        [action.reddit]: posts(state[action.reddit], action)
+        [action.id]: shelf(state[action.id], action)
       })
     default:
       return state
@@ -54,8 +54,8 @@ function postsByReddit(state = { }, action) {
 }
 
 const rootReducer = combineReducers({
-  postsByReddit,
-  selectedReddit
+  shelves,
+  selectedID
 })
 
 export default rootReducer
