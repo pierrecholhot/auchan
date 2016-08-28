@@ -28,14 +28,14 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, selectedID } = this.props
-    dispatch(fetchShelfIfNeeded(selectedID))
+    const { dispatch, selectedShelf } = this.props
+    dispatch(fetchShelfIfNeeded(selectedShelf))
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedID !== this.props.selectedID) {
-      const { dispatch, selectedID } = nextProps
-      dispatch(fetchShelfIfNeeded(selectedID))
+    if (nextProps.selectedShelf !== this.props.selectedShelf) {
+      const { dispatch, selectedShelf } = nextProps
+      dispatch(fetchShelfIfNeeded(selectedShelf))
     }
   }
 
@@ -45,8 +45,8 @@ class App extends Component {
 
   handleRefreshClick(e) {
     e.preventDefault()
-    const { dispatch, selectedID } = this.props
-    dispatch(fetchShelfIfNeeded(selectedID))
+    const { dispatch, selectedShelf } = this.props
+    dispatch(fetchShelfIfNeeded(selectedShelf))
   }
 
   handleCartClick(e) {
@@ -60,7 +60,7 @@ class App extends Component {
   }
 
   render() {
-    const { selectedID, products, name, district, aisle, isFetching, error } = this.props;
+    const { selectedShelf, products, name, district, aisle, isFetching, error } = this.props;
     const style = {
       container: {
         position: 'absolute',
@@ -96,7 +96,7 @@ class App extends Component {
 
         <Drawer width={190} open={this.state.navOpen}>
           <AppBar style={{backgroundColor:deepPurple500}} title="Rayons" iconElementLeft={<IconButton onTouchTap={this.handleNavClick}><Close /></IconButton>} />
-          <Picker value={selectedID} onChange={this.handleChange} />
+          <Picker value={selectedShelf} onChange={this.handleChange} />
         </Drawer>
 
         <Drawer width={320} openSecondary={true} open={this.state.cartOpen} docked={false}>
@@ -109,14 +109,14 @@ class App extends Component {
 }
 
 App.propTypes = {
-  selectedID: PropTypes.string.isRequired,
+  selectedShelf: PropTypes.string.isRequired,
   products: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
-  const { selectedID, shelves } = state
+  const { selectedShelf, shelves } = state
   const {
     isFetching,
     name,
@@ -124,7 +124,7 @@ function mapStateToProps(state) {
     aisle,
     error,
     items: products
-  } = shelves[selectedID] || {
+  } = shelves[selectedShelf] || {
     isFetching: true,
     items: [],
     name: "",
@@ -134,7 +134,7 @@ function mapStateToProps(state) {
   }
 
   return {
-    selectedID,
+    selectedShelf,
     products,
     name,
     district,

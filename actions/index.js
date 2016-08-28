@@ -1,9 +1,9 @@
 import fetch from 'isomorphic-fetch'
 
 export const REQUEST_SHELF = 'REQUEST_SHELF'
-export const RECEIVE_SHELF = 'RECEIVE_SHELF'
+export const REQUEST_SHELF_SUCCESS = 'REQUEST_SHELF_SUCCESS'
 export const SELECT_SHELF = 'SELECT_SHELF'
-export const SHELF_ERROR = 'SHELF_ERROR'
+export const REQUEST_SHELF_ERROR = 'REQUEST_SHELF_ERROR'
 
 export function selectShelf(id) {
   return {
@@ -21,7 +21,7 @@ function requestShelf(id) {
 
 function receiveShelf(id, json) {
   return {
-    type: RECEIVE_SHELF,
+    type: REQUEST_SHELF_SUCCESS,
     items: json.products,
     name: json.name,
     district: json.district.name,
@@ -32,7 +32,7 @@ function receiveShelf(id, json) {
 
 function shelfError(id, json) {
   return {
-    type: SHELF_ERROR,
+    type: REQUEST_SHELF_ERROR,
     error: json.error,
     items: [],
     name: "",
