@@ -22,7 +22,7 @@ import { red500, green500, lightBlack } from 'material-ui/styles/colors';
 class Shelf extends Component {
 
   handleAddCart(id, name, price){
-    return (e) =>{
+    return (e) => {
       this.props.dispatch(addToCart({id, name, price}));
     }
   }

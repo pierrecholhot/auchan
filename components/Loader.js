@@ -1,22 +1,22 @@
 import React, {PropTypes} from 'react';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 
-export const Loader = (props) => {
+export const Loader = () => {
   const style = {
-    container: {
+    root: {
       position: 'absolute',
       left: '50%',
       marginLeft: -20,
       top: 150
     },
-    refresh: {
+    spinner: {
       display: 'inline-block',
       position: 'relative',
     },
   };
   return (
-    <div style={style.container}>
-      <RefreshIndicator size={40} left={10} top={0} status="loading" style={style.refresh} />
+    <div style={style.root}>
+      <RefreshIndicator size={40} left={10} top={0} status="loading" style={style.spinner} />
     </div>
   )
 }
