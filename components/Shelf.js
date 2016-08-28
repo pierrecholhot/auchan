@@ -54,7 +54,7 @@ class Shelf extends Component {
 
     return (
       <List>
-        <Subheader>{!total ? "Aucun" : total} produit dans votre rayon ( {this.props.district} > {this.props.aisle} > {this.props.name} )</Subheader>
+        <Subheader>{!total ? "Aucun produit" : (total > 1 ? `${total} produits` : '1 produit')} dans votre rayon ( {this.props.district} > {this.props.aisle} > {this.props.name} )</Subheader>
         { products }
       </List>
     )
