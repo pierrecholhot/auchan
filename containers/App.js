@@ -59,7 +59,7 @@ class App extends Component {
   }
 
   render() {
-    const { selectedShelf, products, name, district, aisle, isFetching, error } = this.props;
+    const { selectedShelf, products, name, district, aisle, isFetching, error, store } = this.props;
 
     return (
       <Paper style={{margin: "0 auto", minHeight: "300px" }}>
@@ -83,13 +83,18 @@ class App extends Component {
 
         <Drawer width={340} openSecondary={true} open={this.state.cartOpen}>
           <AppBar style={{backgroundColor:deepPurple500}} title="Panier" showMenuIconButton={false} iconElementRight={<IconButton onTouchTap={this.handleCartClick}><CloseIcon /></IconButton>} />
-          <ShoppingCart items={['Un', 'Deux', 'Trois']} />
+          <ShoppingCart store={store} />
         </Drawer>
 
       </Paper>
     )
   }
 }
+
+
+App.childContextTypes = {
+    store: PropTypes.object.isRequired
+};
 
 App.propTypes = {
   selectedShelf: PropTypes.string.isRequired,

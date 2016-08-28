@@ -1,4 +1,7 @@
 import React, { PropTypes, Component } from 'react'
+import { connect } from 'react-redux'
+
+import {addToCart} from '../actions';
 
 import {ProductLabel} from './ProductLabel';
 import {ProductPrice} from './ProductPrice';
@@ -16,10 +19,12 @@ import AlarmAddIcon from 'material-ui/svg-icons/action/alarm-add';
 
 import { red500, green500, lightBlack } from 'material-ui/styles/colors';
 
-export default class Shelf extends Component {
+class Shelf extends Component {
 
-  constructor(props) {
-    super(props)
+  handleAddCart(id, name, price){
+    return (e) =>{
+      this.props.dispatch(addToCart({id, name, price}));
+    }
   }
 
   render() {
@@ -30,7 +35,7 @@ export default class Shelf extends Component {
       const Price = (<ProductPrice price={prd.price} promotion={prd.promotion} />);
       const category = (<ProductCategory category={prd.category} />);
       const secondaryText = (<p> { inStock ? Price : <ProductOutOfStock /> } <br /> { prd.category && category } </p>);
-      const btnAddToCart = (<IconButton><AddShoppingCartIcon color={green500} /></IconButton>);
+      const btnAddToCart = (<IconButton onTouchTap={this.handleAddCart(prd.id, prd.name, prd.price)}><AddShoppingCartIcon color={green500} /></IconButton>);
       const btnNotify = (<IconButton><AlarmAddIcon /></IconButton>);
       const productImage = (<Avatar src={prd.picture} />);
       return (
@@ -49,7 +54,7 @@ export default class Shelf extends Component {
 
     return (
       <List>
-        <Subheader>{!total ? "Aucun" : total} résultat dans votre rayon ( {this.props.district} > {this.props.aisle} > {this.props.name} )</Subheader>
+        <Subheader>{!total ? "Aucun" : total} produit dans votre rayon ( {this.props.district} > {this.props.aisle} > {this.props.name} )</Subheader>
         { products }
       </List>
     )
@@ -59,5 +64,8 @@ export default class Shelf extends Component {
 Shelf.propTypes = {
   products: PropTypes.array.isRequired,
   name: PropTypes.string.isRequired,
-  district: PropTypes.string.isRequired
+  district: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired
 }
+
+export default connect()(Shelf)

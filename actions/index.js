@@ -4,6 +4,8 @@ export const REQUEST_SHELF = 'REQUEST_SHELF'
 export const REQUEST_SHELF_SUCCESS = 'REQUEST_SHELF_SUCCESS'
 export const SELECT_SHELF = 'SELECT_SHELF'
 export const REQUEST_SHELF_ERROR = 'REQUEST_SHELF_ERROR'
+export const ADD_TO_CART = 'ADD_TO_CART'
+export const REMOVE_FROM_CART = 'REMOVE_FROM_CART'
 
 export function selectShelf(id) {
   return {
@@ -38,6 +40,20 @@ function shelfError(id, json) {
     name: "",
     district: "",
     aisle: "",
+    id
+  }
+}
+
+export const addToCart = ({id, name, price}) => {
+  return {
+    type: ADD_TO_CART,
+    id, name, price
+  }
+}
+
+export const removeFromCart = (id) => {
+  return {
+    type: REMOVE_FROM_CART,
     id
   }
 }
