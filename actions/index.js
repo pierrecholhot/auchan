@@ -1,11 +1,18 @@
 import fetch from 'isomorphic-fetch'
 
+export const SELECT_SHELF = 'SELECT_SHELF'
+
 export const REQUEST_SHELF = 'REQUEST_SHELF'
 export const REQUEST_SHELF_SUCCESS = 'REQUEST_SHELF_SUCCESS'
-export const SELECT_SHELF = 'SELECT_SHELF'
 export const REQUEST_SHELF_ERROR = 'REQUEST_SHELF_ERROR'
+
 export const ADD_TO_CART = 'ADD_TO_CART'
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART'
+
+export const OPEN_NAV = 'OPEN_NAV'
+export const CLOSE_NAV = 'CLOSE_NAV'
+export const OPEN_CART = 'OPEN_CART'
+export const CLOSE_CART = 'CLOSE_CART'
 
 export function selectShelf(id) {
   return {
@@ -93,3 +100,8 @@ export function fetchShelfIfNeeded(id) {
     }
   }
 }
+
+export const openNav = () => { return { type: OPEN_NAV } }
+export const closeNav = () => { return { type: CLOSE_NAV } }
+export const openCart = () => { return { type: OPEN_CART } }
+export const closeCart = () => { return { type: CLOSE_CART } }

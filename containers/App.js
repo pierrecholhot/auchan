@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectShelf, fetchShelfIfNeeded } from '../actions'
-import Picker from '../components/Picker'
+import { selectShelf, fetchShelfIfNeeded, openNav, closeNav, openCart, closeCart } from '../actions'
+import Navigation from '../components/Navigation'
 import ShoppingCart from '../components/ShoppingCart'
 import Shelf from '../components/Shelf'
 import { Loader } from '../components/Loader'
@@ -20,15 +20,19 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
-    this.handleRefreshClick = this.handleRefreshClick.bind(this)
-    this.handleCartClick = this.handleCartClick.bind(this)
-    this.handleNavClick = this.handleNavClick.bind(this)
+    this.handleOpenNav = this.handleOpenNav.bind(this)
+    this.handleCloseNav = this.handleCloseNav.bind(this)
+    this.handleOpenCart = this.handleOpenCart.bind(this)
+    this.handleCloseCart = this.handleCloseCart.bind(this)
     this.state = {cartOpen: false, navOpen: false};
   }
 
   componentDidMount() {
-    const { dispatch, selectedShelf } = this.props
+    const { store, dispatch, selectedShelf } = this.props
     dispatch(fetchShelfIfNeeded(selectedShelf))
+    store.subscribe(() => {
+      this.setState(this.props.store.getState().ui);
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,22 +44,23 @@ class App extends Component {
 
   handleChange(nextID) {
     this.props.dispatch(selectShelf(nextID))
+    this.props.dispatch(closeNav())
   }
 
-  handleRefreshClick(e) {
-    if(e){ e.preventDefault() }
-    const { dispatch, selectedShelf } = this.props
-    dispatch(fetchShelfIfNeeded(selectedShelf))
+  handleOpenCart() {
+    this.props.dispatch(openCart())
   }
 
-  handleCartClick(e) {
-    e.preventDefault()
-    this.setState({cartOpen: !this.state.cartOpen});
+  handleCloseCart() {
+    this.props.dispatch(closeCart())
   }
 
-  handleNavClick(e) {
-    e.preventDefault()
-    this.setState({navOpen: !this.state.navOpen});
+  handleOpenNav() {
+    this.props.dispatch(openNav())
+  }
+
+  handleCloseNav() {
+    this.props.dispatch(closeNav())
   }
 
   render() {
@@ -66,8 +71,8 @@ class App extends Component {
 
         <AppBar
           title="AuchanDirect.fr"
-          iconElementLeft={<IconButton onTouchTap={this.handleNavClick}><MenuIcon /></IconButton>}
-          iconElementRight={<IconButton onTouchTap={this.handleCartClick}><ShoppingCartIcon /></IconButton>}
+          iconElementLeft={<IconButton onTouchTap={this.handleOpenNav}><MenuIcon /></IconButton>}
+          iconElementRight={<IconButton onTouchTap={this.handleOpenCart}><ShoppingCartIcon /></IconButton>}
         />
 
         {
@@ -77,12 +82,12 @@ class App extends Component {
         }
 
         <Drawer with={180} open={this.state.navOpen} docked={false}>
-          <AppBar style={{backgroundColor:deepPurple500}} title="Rayons" iconElementLeft={<IconButton onTouchTap={this.handleNavClick}><CloseIcon /></IconButton>} />
-          <Picker value={selectedShelf} onChange={this.handleChange} />
+          <AppBar style={{backgroundColor:deepPurple500}} title="Rayons" iconElementLeft={<IconButton onTouchTap={this.handleCloseNav}><CloseIcon /></IconButton>} />
+          <Navigation value={selectedShelf} onChange={this.handleChange} />
         </Drawer>
 
         <Drawer width={340} openSecondary={true} open={this.state.cartOpen}>
-          <AppBar style={{backgroundColor:deepPurple500}} title="Panier" showMenuIconButton={false} iconElementRight={<IconButton onTouchTap={this.handleCartClick}><CloseIcon /></IconButton>} />
+          <AppBar style={{backgroundColor:deepPurple500}} title="Panier" showMenuIconButton={false} iconElementRight={<IconButton onTouchTap={this.handleCloseCart}><CloseIcon /></IconButton>} />
           <ShoppingCart store={store} />
         </Drawer>
 
