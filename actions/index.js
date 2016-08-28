@@ -64,7 +64,7 @@ function fetchShelf(id) {
 
 function shouldFetchShelf(state, id) {
   const shelf = state.shelves[id]
-  if (shelf || (shelf && shelf.isFetching)) {
+  if (shelf || (shelf && shelf.isFetching) || (shelf && !shelf.error)) {
     return false
   }
   return true

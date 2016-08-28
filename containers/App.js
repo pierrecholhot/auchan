@@ -2,19 +2,18 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { selectShelf, fetchShelfIfNeeded } from '../actions'
 import Picker from '../components/Picker'
+import ShoppingCart from '../components/ShoppingCart'
 import Shelf from '../components/Shelf'
+import { Loader } from '../components/Loader'
+import { ErrorMessage } from '../components/ErrorMessage'
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
 import {red500, deepPurple500} from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import Menu from 'material-ui/svg-icons/navigation/menu';
-import Close from 'material-ui/svg-icons/navigation/close';
-import RefreshIndicator from 'material-ui/RefreshIndicator';
+import MenuIcon from 'material-ui/svg-icons/navigation/menu';
+import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import ShoppingCartIcon from 'material-ui/svg-icons/action/shopping-cart';
 import Drawer from 'material-ui/Drawer';
-import ShoppingCart from 'material-ui/svg-icons/action/shopping-cart';
 import Divider from 'material-ui/Divider';
 
 class App extends Component {
@@ -44,7 +43,7 @@ class App extends Component {
   }
 
   handleRefreshClick(e) {
-    e.preventDefault()
+    if(e){ e.preventDefault() }
     const { dispatch, selectedShelf } = this.props
     dispatch(fetchShelfIfNeeded(selectedShelf))
   }
@@ -61,46 +60,30 @@ class App extends Component {
 
   render() {
     const { selectedShelf, products, name, district, aisle, isFetching, error } = this.props;
-    const style = {
-      container: {
-        position: 'absolute',
-        left: '50%',
-        marginLeft: -20,
-        top: 150
-      },
-      refresh: {
-        display: 'inline-block',
-        position: 'relative',
-      },
-    };
-    const loading = (
-      <div style={style.container}>
-        <RefreshIndicator size={40} left={10} top={0} status="loading" style={style.refresh} />
-      </div>
-    )
-    const showError = <h2 style={{textAlign: "center", color: red500}}>{error}</h2>
+
     return (
-      <Paper style={{margin: "0 auto", minHeight: "50vh" }}>
+      <Paper style={{margin: "0 auto", minHeight: "300px" }}>
 
         <AppBar
           title="AuchanDirect.fr"
-          iconElementLeft={<IconButton onTouchTap={this.handleNavClick}><Menu /></IconButton>}
-          iconElementRight={<IconButton onTouchTap={this.handleCartClick}><ShoppingCart /></IconButton>}
+          iconElementLeft={<IconButton onTouchTap={this.handleNavClick}><MenuIcon /></IconButton>}
+          iconElementRight={<IconButton onTouchTap={this.handleCartClick}><ShoppingCartIcon /></IconButton>}
         />
 
         {
           isFetching ?
-            loading :
-            (error ? showError : <Shelf products={products} name={name} district={district} aisle={aisle} />)
+            <Loader /> :
+            (error ? <ErrorMessage text={error} /> : <Shelf products={products} name={name} district={district} aisle={aisle} />)
         }
 
-        <Drawer width={190} open={this.state.navOpen}>
-          <AppBar style={{backgroundColor:deepPurple500}} title="Rayons" iconElementLeft={<IconButton onTouchTap={this.handleNavClick}><Close /></IconButton>} />
+        <Drawer with={180} open={this.state.navOpen} docked={false}>
+          <AppBar style={{backgroundColor:deepPurple500}} title="Rayons" iconElementLeft={<IconButton onTouchTap={this.handleNavClick}><CloseIcon /></IconButton>} />
           <Picker value={selectedShelf} onChange={this.handleChange} />
         </Drawer>
 
-        <Drawer width={320} openSecondary={true} open={this.state.cartOpen} docked={false}>
-          <AppBar style={{backgroundColor:deepPurple500}} title="Panier" showMenuIconButton={false} iconElementRight={<IconButton onTouchTap={this.handleCartClick}><Close /></IconButton>} />
+        <Drawer width={340} openSecondary={true} open={this.state.cartOpen}>
+          <AppBar style={{backgroundColor:deepPurple500}} title="Panier" showMenuIconButton={false} iconElementRight={<IconButton onTouchTap={this.handleCartClick}><CloseIcon /></IconButton>} />
+          <ShoppingCart items={['Un', 'Deux', 'Trois']} />
         </Drawer>
 
       </Paper>
