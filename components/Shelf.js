@@ -29,7 +29,7 @@ export default class Shelf extends Component {
       const primaryText = (<ProductLabel name={prd.name} portion={prd.portion_description} brand={prd.brand} />);
       const Price = (<ProductPrice price={prd.price} promotion={prd.promotion} />);
       const category = (<ProductCategory category={prd.category} />);
-      const secondaryText = (<p> { inStock ? Price : <ProductOutOfStock /> } <br /> {category} </p>);
+      const secondaryText = (<p> { inStock ? Price : <ProductOutOfStock /> } <br /> { prd.category && category } </p>);
       const btnAddToCart = (<IconButton><AddShoppingCartIcon color={green500} /></IconButton>);
       const btnNotify = (<IconButton><AlarmAddIcon /></IconButton>);
       const productImage = (<Avatar src={prd.picture} />);
