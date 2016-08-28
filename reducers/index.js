@@ -1,39 +1,28 @@
 import { combineReducers } from 'redux'
 import {
-  SELECT_REDDIT, INVALIDATE_REDDIT,
+  SELECT_SHELF,
   REQUEST_SHELF, RECEIVE_SHELF
 } from '../actions'
 
 function selectedID(state = '23', action) {
   switch (action.type) {
-    case SELECT_REDDIT:
+    case SELECT_SHELF:
       return action.id
     default:
       return state
   }
 }
 
-function shelf(state = {
-  isFetching: false,
-  didInvalidate: false,
-  items: []
-}, action) {
+function shelf(state = {isFetching: false, items: []}, action) {
   switch (action.type) {
-    case INVALIDATE_REDDIT:
-      return Object.assign({}, state, {
-        didInvalidate: true
-      })
     case REQUEST_SHELF:
       return Object.assign({}, state, {
         isFetching: true,
-        didInvalidate: false
       })
     case RECEIVE_SHELF:
       return Object.assign({}, state, {
         isFetching: false,
-        didInvalidate: false,
-        items: action.shelf,
-        lastUpdated: action.receivedAt
+        items: action.items
       })
     default:
       return state
@@ -42,7 +31,6 @@ function shelf(state = {
 
 function shelves(state = {}, action) {
   switch (action.type) {
-    case INVALIDATE_REDDIT:
     case RECEIVE_SHELF:
     case REQUEST_SHELF:
       return Object.assign({}, state, {

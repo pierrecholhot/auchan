@@ -2,19 +2,11 @@ import fetch from 'isomorphic-fetch'
 
 export const REQUEST_SHELF = 'REQUEST_SHELF'
 export const RECEIVE_SHELF = 'RECEIVE_SHELF'
-export const SELECT_REDDIT = 'SELECT_REDDIT'
-export const INVALIDATE_REDDIT = 'INVALIDATE_REDDIT'
+export const SELECT_SHELF = 'SELECT_SHELF'
 
-export function selectID(id) {
+export function selectShelf(id) {
   return {
-    type: SELECT_REDDIT,
-    id
-  }
-}
-
-export function invalidateID(id) {
-  return {
-    type: INVALIDATE_REDDIT,
+    type: SELECT_SHELF,
     id
   }
 }
@@ -29,9 +21,8 @@ function requestShelf(id) {
 function receiveShelf(id, json) {
   return {
     type: RECEIVE_SHELF,
-    id,
-    shelf: json.products,
-    receivedAt: Date.now()
+    items: json.products,
+    id
   }
 }
 
@@ -46,13 +37,10 @@ function fetchShelf(id) {
 
 function shouldFetchShelf(state, id) {
   const shelf = state.shelves[id]
-  if (!shelf) {
-    return true
-  }
-  if (shelf.isFetching) {
+  if (shelf || (shelf && shelf.isFetching)) {
     return false
   }
-  return shelf.didInvalidate
+  return true
 }
 
 export function fetchShelfIfNeeded(id) {

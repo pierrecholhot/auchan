@@ -1,29 +1,20 @@
 import React, { Component, PropTypes } from 'react'
+import MenuItem from 'material-ui/MenuItem';
 
 export default class Picker extends Component {
   render() {
-    const { value, onChange, options } = this.props
-
+    const { value, onChange } = this.props
     return (
-      <span>
-        <h1>{value}</h1>
-        <select onChange={e => onChange(e.target.value)}
-                value={value}>
-          {options.map(option =>
-            <option value={option} key={option}>
-              {option}
-            </option>)
-          }
-        </select>
-      </span>
+      <div>{
+          Array.apply(null, {length: 25}).map(Number.call, Number).map((option, i) =>
+            <MenuItem checked={option.toString() === value} key={i} primaryText={option} onTouchTap={(e) => onChange(e.target.innerText)} />
+          )
+      }</div>
     )
   }
 }
 
 Picker.propTypes = {
-  options: PropTypes.arrayOf(
-    PropTypes.string.isRequired
-  ).isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired
 }
