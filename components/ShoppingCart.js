@@ -4,7 +4,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Subheader from 'material-ui/Subheader';
 import { lightBlack, green500 } from 'material-ui/styles/colors';
-import Delete from 'material-ui/svg-icons/action/delete';
+import DeleteIcon from 'material-ui/svg-icons/action/delete';
 
 import {removeFromCart} from '../actions';
 
@@ -38,7 +38,7 @@ class ShoppingCart extends Component {
             items.map(({id, name, price}, i) =>
               <MenuItem
                 key={i}
-                leftIcon={<Delete />}
+                leftIcon={<DeleteIcon />}
                 value={id}
                 primaryText={<span style={labelStyles}>{name}</span>}
                 secondaryText={<small style={{color: lightBlack}}>{price/100}€</small>}
