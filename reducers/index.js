@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux'
 import {
   SELECT_SHELF,
-  REQUEST_SHELF, RECEIVE_SHELF
+  REQUEST_SHELF,
+  RECEIVE_SHELF,
+  SHELF_ERROR
 } from '../actions'
 
 function selectedID(state = '23', action) {
@@ -13,8 +15,23 @@ function selectedID(state = '23', action) {
   }
 }
 
-function shelf(state = {isFetching: false, items: []}, action) {
+
+const shelfState = {
+  isFetching:false,
+  error: false,
+  items:[],
+  name:"",
+  district:"",
+  aisle:""
+};
+
+function shelf(state = shelfState, action) {
   switch (action.type) {
+    case SHELF_ERROR:
+      return Object.assign({}, state, {
+        isFetching: false,
+        error: action.error
+      })
     case REQUEST_SHELF:
       return Object.assign({}, state, {
         isFetching: true,
@@ -22,7 +39,11 @@ function shelf(state = {isFetching: false, items: []}, action) {
     case RECEIVE_SHELF:
       return Object.assign({}, state, {
         isFetching: false,
-        items: action.items
+        error: false,
+        items: action.items,
+        name: action.name,
+        district: action.district,
+        aisle: action.aisle
       })
     default:
       return state
@@ -31,6 +52,7 @@ function shelf(state = {isFetching: false, items: []}, action) {
 
 function shelves(state = {}, action) {
   switch (action.type) {
+    case SHELF_ERROR:
     case RECEIVE_SHELF:
     case REQUEST_SHELF:
       return Object.assign({}, state, {

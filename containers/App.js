@@ -60,8 +60,7 @@ class App extends Component {
   }
 
   render() {
-    const { selectedID, products, isFetching } = this.props
-    const isEmpty = products.length === 0
+    const { selectedID, products, name, district, aisle, isFetching, error } = this.props;
     const style = {
       container: {
         position: 'absolute',
@@ -79,9 +78,9 @@ class App extends Component {
         <RefreshIndicator size={40} left={10} top={0} status="loading" style={style.refresh} />
       </div>
     )
-    const noResults = <h2>Aucun résultat</h2>;
+    const showError = <h2 style={{textAlign: "center", color: red500}}>{error}</h2>
     return (
-      <Paper style={{margin: "0 auto", minHeight: "300px" }}>
+      <Paper style={{margin: "0 auto", minHeight: "50vh" }}>
 
         <AppBar
           title="AuchanDirect.fr"
@@ -89,7 +88,11 @@ class App extends Component {
           iconElementRight={<IconButton onTouchTap={this.handleCartClick}><ShoppingCart /></IconButton>}
         />
 
-        { isEmpty ? (isFetching ? loading : noResults) : <Shelf products={products} /> }
+        {
+          isFetching ?
+            loading :
+            (error ? showError : <Shelf products={products} name={name} district={district} aisle={aisle} />)
+        }
 
         <Drawer width={190} open={this.state.navOpen}>
           <AppBar style={{backgroundColor:deepPurple500}} title="Rayons" iconElementLeft={<IconButton onTouchTap={this.handleNavClick}><Close /></IconButton>} />
@@ -116,16 +119,28 @@ function mapStateToProps(state) {
   const { selectedID, shelves } = state
   const {
     isFetching,
+    name,
+    district,
+    aisle,
+    error,
     items: products
   } = shelves[selectedID] || {
     isFetching: true,
-    items: []
+    items: [],
+    name: "",
+    district: "",
+    aisle: "",
+    error: false
   }
 
   return {
     selectedID,
     products,
-    isFetching
+    name,
+    district,
+    aisle,
+    isFetching,
+    error,
   }
 }
 
