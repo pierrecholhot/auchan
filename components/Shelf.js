@@ -44,16 +44,11 @@ class Shelf extends Component {
 
   handleTouchTap(event) {
     event.preventDefault();
-    this.setState({
-      open: true,
-      anchorEl: event.currentTarget,
-    });
+    this.setState({ open: true, anchorEl: event.currentTarget });
   }
 
   handleRequestClose(){
-    this.setState({
-      open: false,
-    });
+    this.setState({ open: false });
   }
 
   render() {
@@ -99,8 +94,8 @@ class Shelf extends Component {
             <Popover
               open={this.state.open}
               anchorEl={this.state.anchorEl}
-              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'left', vertical: 'top'}}
+              anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+              targetOrigin={{horizontal: 'right', vertical: 'top'}}
               onRequestClose={this.handleRequestClose.bind(this)}
             >
               <Menu>{ categories }</Menu>
