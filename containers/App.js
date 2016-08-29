@@ -24,15 +24,11 @@ class App extends Component {
     this.handleCloseNav = this.handleCloseNav.bind(this)
     this.handleOpenCart = this.handleOpenCart.bind(this)
     this.handleCloseCart = this.handleCloseCart.bind(this)
-    this.state = {cartOpen: false, navOpen: false};
   }
 
   componentDidMount() {
-    const { store, dispatch, selectedShelf } = this.props
+    const { dispatch, selectedShelf } = this.props
     dispatch(fetchShelfIfNeeded(selectedShelf))
-    store.subscribe(() => {
-      this.setState(this.props.store.getState().ui);
-    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,8 +39,9 @@ class App extends Component {
   }
 
   handleChange(nextID) {
-    this.props.dispatch(selectShelf(nextID))
-    this.props.dispatch(closeNav())
+    const { dispatch } = this.props
+    dispatch(selectShelf(nextID))
+    dispatch(closeNav())
   }
 
   handleOpenCart() {
@@ -64,7 +61,7 @@ class App extends Component {
   }
 
   render() {
-    const { selectedShelf, products, name, district, aisle, isFetching, error, store } = this.props;
+    const { selectedShelf, products, name, district, aisle, isFetching, error } = this.props;
 
     return (
       <Paper style={{margin: "0 auto", minHeight: "300px" }}>
@@ -81,14 +78,14 @@ class App extends Component {
             (error ? <ErrorMessage text={error} /> : <Shelf products={products} name={name} district={district} aisle={aisle} />)
         }
 
-        <Drawer with={180} open={this.state.navOpen} docked={false}>
+        <Drawer with={180} open={this.props.ui.navOpen} docked={false}>
           <AppBar style={{backgroundColor:deepPurple500}} title="Rayons" iconElementLeft={<IconButton onTouchTap={this.handleCloseNav}><CloseIcon /></IconButton>} />
           <Navigation value={selectedShelf} onChange={this.handleChange} />
         </Drawer>
 
-        <Drawer width={340} openSecondary={true} open={this.state.cartOpen}>
+        <Drawer width={340} openSecondary={true} open={this.props.ui.cartOpen}>
           <AppBar style={{backgroundColor:deepPurple500}} title="Panier" showMenuIconButton={false} iconElementRight={<IconButton onTouchTap={this.handleCloseCart}><CloseIcon /></IconButton>} />
-          <ShoppingCart store={store} />
+          <ShoppingCart />
         </Drawer>
 
       </Paper>
@@ -96,20 +93,16 @@ class App extends Component {
   }
 }
 
-
-App.childContextTypes = {
-    store: PropTypes.object.isRequired
-};
-
 App.propTypes = {
   selectedShelf: PropTypes.string.isRequired,
   products: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  ui: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
-  const { selectedShelf, shelves } = state
+  const { selectedShelf, shelves, ui } = state
   const {
     isFetching,
     name,
@@ -134,6 +127,7 @@ function mapStateToProps(state) {
     aisle,
     isFetching,
     error,
+    ui
   }
 }
 

@@ -13,21 +13,14 @@ class ShoppingCart extends Component {
   constructor(props) {
     super(props)
     this.handleRemoveCart = this.handleRemoveCart.bind(this);
-    this.state = { items: [] };
   }
 
   handleRemoveCart(ev, item, itemIdx){
     this.props.dispatch(removeFromCart(item.props.value));
   }
 
-  componentDidMount(){
-    this.props.store.subscribe(()=> {
-      this.setState({items: this.props.store.getState().cart});
-    });
-  }
-
   render() {
-    const { items } = this.state;
+    const { items } = this.props;
     const totalPrice = items.reduce((total, item) => (item.price + total), 0);
     const labelStyles = { maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' };
 
@@ -52,8 +45,10 @@ class ShoppingCart extends Component {
   }
 }
 
-ShoppingCart.propTypes = {
-  store: PropTypes.object.isRequired
+function mapStateToProps(state){
+  return {
+    items: state.cart
+  }
 }
 
-export default connect()(ShoppingCart)
+export default connect(mapStateToProps)(ShoppingCart)

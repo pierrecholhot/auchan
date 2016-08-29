@@ -13,7 +13,7 @@ const store = configureStore()
 render(
   <Provider store={store}>
     <MuiThemeProvider>
-      <App store={store} />
+      <App />
     </MuiThemeProvider>
   </Provider>,
   document.getElementById('root')

@@ -19,6 +19,7 @@ import AlarmAddIcon from 'material-ui/svg-icons/action/alarm-add';
 
 import { red500, green500, lightBlack } from 'material-ui/styles/colors';
 
+
 class Shelf extends Component {
 
   handleAddCart(id, name, price){
@@ -49,7 +50,7 @@ class Shelf extends Component {
             rightIconButton={inStock ? btnAddToCart : btnNotify }
           />
         </div>
-      );
+      )
     });
 
     return (
@@ -59,6 +60,7 @@ class Shelf extends Component {
       </List>
     )
   }
+
 }
 
 Shelf.propTypes = {
