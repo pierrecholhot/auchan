@@ -29,6 +29,7 @@ function shelf(state = initialState, action) {
         isFetching: false,
         error: false,
         items: action.items,
+        filters: action.filters,
         name: action.name,
         district: action.district,
         aisle: action.aisle

@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch'
+import _ from 'lodash';
 
 export const SELECT_SHELF = 'SELECT_SHELF'
 
@@ -35,6 +36,9 @@ function receiveShelf(id, json) {
     name: json.name,
     district: json.district.name,
     aisle: json.aisle.name,
+    filters: {
+      categories: parseCategories(json.products)
+    },
     id
   }
 }
@@ -63,6 +67,10 @@ export const removeFromCart = (id) => {
     type: REMOVE_FROM_CART,
     id
   }
+}
+
+function parseCategories(products){
+  return _.countBy(products, 'category');
 }
 
 function fetchShelf(id) {

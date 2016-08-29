@@ -61,7 +61,7 @@ class App extends Component {
   }
 
   render() {
-    const { selectedShelf, products, name, district, aisle, isFetching, error } = this.props;
+    const { selectedShelf, products, name, district, aisle, filters, isFetching, error } = this.props;
 
     return (
       <Paper style={{margin: "0 auto", minHeight: "300px" }}>
@@ -75,7 +75,7 @@ class App extends Component {
         {
           isFetching ?
             <Loader /> :
-            (error ? <ErrorMessage text={error} /> : <Shelf products={products} name={name} district={district} aisle={aisle} />)
+            (error ? <ErrorMessage text={error} /> : <Shelf products={products} name={name} district={district} aisle={aisle} filters={filters} />)
         }
 
         <Drawer with={180} open={this.props.ui.navOpen} docked={false}>
@@ -103,16 +103,19 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   const { selectedShelf, shelves, ui } = state
+
   const {
     isFetching,
     name,
     district,
     aisle,
     error,
+    filters,
     items: products
   } = shelves[selectedShelf] || {
     isFetching: true,
     items: [],
+    filters: [],
     name: "",
     district: "",
     aisle: "",
@@ -126,6 +129,7 @@ function mapStateToProps(state) {
     district,
     aisle,
     isFetching,
+    filters,
     error,
     ui
   }
