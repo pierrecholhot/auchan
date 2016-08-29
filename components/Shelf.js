@@ -64,7 +64,7 @@ class Shelf extends Component {
       const primaryText = (<ProductLabel name={prd.name} portion={prd.portion_description} brand={prd.brand} />);
       const Price = (<ProductPrice price={prd.price} promotion={prd.promotion} />);
       const category = (<ProductCategory category={prd.category} />);
-      const secondaryText = (<p> { inStock ? Price : <ProductOutOfStock /> } <br /> { prd.category && category } </p>);
+      const secondaryText = (<p> { (inStock && !!prd.price) ? Price : <ProductOutOfStock /> } <br /> { prd.category && category } </p>);
       const btnAddToCart = (<IconButton onTouchTap={this.handleAddCart(prd.id, prd.name, prd.price)}><AddShoppingCartIcon color={green500} /></IconButton>);
       const btnNotify = (<IconButton><AlarmAddIcon /></IconButton>);
       const productImage = (<Avatar src={prd.picture} />);
@@ -82,19 +82,19 @@ class Shelf extends Component {
       )
     });
 
-    const { categories } = filters;
-    const cats = [];
-    let i = 0;
-    for (let c in categories) {
-      i = i + 1;
-      cats.push(<MenuItem key={i}><Checkbox label={`${c} (${categories[c]})`} defaultChecked={true} /></MenuItem>)
-    }
+    const categories = Object.keys(filters.categories).map((c, i) =>
+      <MenuItem key={i}>
+        <Checkbox style={{padding:'8px 0'}} inputStyle={{top: 0}} label={`${c} (${filters.categories[c]})`} defaultChecked={true} />
+      </MenuItem>
+    )
 
     return (
       <List>
-        <Subheader style={{margin: '8px 0'}}>
-          {!total ? "Aucun produit" : (total > 1 ? `${total} produits` : '1 produit')} dans votre rayon ( {this.props.district} > {this.props.aisle} > {this.props.name} )
-          <div style={{float: 'right', marginRight: 16 }}>
+        <Subheader style={{display: 'flex'}}>
+          <span>
+            {!total ? "Aucun produit" : (total > 1 ? `${total} produits` : '1 produit')} dans votre rayon ( {this.props.district} > {this.props.aisle} > {this.props.name} )
+          </span>
+          <div style={{flex: '1 0 0', textAlign: 'right', paddingRight: 8}}>
             <FlatButton label="Filtres" onTouchTap={this.handleTouchTap.bind(this)} secondary={true} icon={<FiltersIcon />} />
             <Popover
               open={this.state.open}
@@ -103,7 +103,7 @@ class Shelf extends Component {
               targetOrigin={{horizontal: 'left', vertical: 'top'}}
               onRequestClose={this.handleRequestClose.bind(this)}
             >
-              <Menu>{ cats }</Menu>
+              <Menu>{ categories }</Menu>
             </Popover>
           </div>
         </Subheader>
