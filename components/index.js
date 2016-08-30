@@ -7,3 +7,5 @@ export { ProductOutOfStock } from '../components/ProductOutOfStock';
 export { ProductPrice } from '../components/ProductPrice';
 export { ShoppingCart } from '../components/ShoppingCart';
 export { ShoppingCartButton } from '../components/ShoppingCartButton';
+export { ShelfProduct } from '../components/ShelfProduct';
+export { ShelfInfoBar } from '../components/ShelfInfoBar';

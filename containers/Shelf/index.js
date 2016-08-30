@@ -1,5 +1,5 @@
-import React, { PropTypes, Component } from 'react'
-import { connect } from 'react-redux'
+import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
 
 import {
   addToCart,
@@ -9,102 +9,45 @@ import {
   removeAllCategoryFilters
 } from '../../actions';
 
-import {ProductLabel} from '../../components/ProductLabel';
-import {ProductPrice} from '../../components/ProductPrice';
-import {ProductOutOfStock} from '../../components/ProductOutOfStock';
-import {ProductCategory} from '../../components/ProductCategory';
+import {
+  ShelfProduct,
+  ShelfInfoBar,
+} from '../../components';
 
-import { List, ListItem } from 'material-ui/List';
-import Avatar from 'material-ui/Avatar';
-import Divider from 'material-ui/Divider';
+import { List } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
-import IconButton from 'material-ui/IconButton';
 import Checkbox from 'material-ui/Checkbox';
-
-import AddShoppingCartIcon from 'material-ui/svg-icons/action/add-shopping-cart';
-import AlarmAddIcon from 'material-ui/svg-icons/action/alarm-add';
-import FiltersIcon from 'material-ui/svg-icons/content/filter-list';
-
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Snackbar from 'material-ui/Snackbar';
-
-import { red500, green500, lightBlack } from 'material-ui/styles/colors';
-
+import FiltersIcon from 'material-ui/svg-icons/content/filter-list';
 
 class Shelf extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
+    _.bindAll(this, 'handleAddCart', 'handleTouchTap', 'handlePopoverRequestClose', 'handleSnackbarRequestClose', 'handleFilterToggle');
+
+    // TODO: create a reducer
     this.state = {
+      anchorEl: null,
       filtersPopoverOpen: false,
       snackbarOpen: false,
       snackbarMessage: ""
     };
   }
 
-  handleAddCart(id, name, price){
-    return (e) => {
-      this.props.dispatch(addToCart({id, name, price}));
-      this.setState({
-        snackbarOpen: true,
-        snackbarMessage: `« ${name} » ajouté au panier`
-      })
-    }
-  }
-
-  handleTouchTap(event) {
-    event.preventDefault();
-    this.setState({ filtersPopoverOpen: true, anchorEl: event.currentTarget });
-  }
-
-  handlePopoverRequestClose(){
-    this.setState({ filtersPopoverOpen: false });
-  }
-
-  handleSnackbarRequestClose(){
-    this.setState({ snackbarOpen: false });
-  }
-
-  triggerFilterActions(e, checked){
-    const v = e.nativeEvent.target.nextSibling.textContent.split(' — ')[0];
-    this.props.dispatch(
-      checked ? addCategoryFilter(v) : removeCategoryFilter(v)
-    )
-  }
-
   componentDidMount(){
-    this.props.dispatch(addAllCategoryFilters(Object.keys(this.props.filters.categories)))
+    const arr = Object.keys(this.props.filters.categories);
+    this.props.dispatch(addAllCategoryFilters(arr));
   }
 
   render() {
-    const { products, filters } = this.props;
+    const { products, district, aisle, name, filters } = this.props;
     const total = products.length;
-    const items = products.map((prd, i) => {
-      const inStock = !!prd.stock;
-      const primaryText = (<ProductLabel name={prd.name} portion={prd.portion_description} brand={prd.brand} />);
-      const Price = (<ProductPrice price={prd.price} promotion={prd.promotion} />);
-      const category = (<ProductCategory category={prd.category} />);
-      const secondaryText = (<p> { (inStock && !!prd.price) ? Price : <ProductOutOfStock /> } <br /> { prd.category && category } </p>);
-      const btnAddToCart = (<IconButton onTouchTap={this.handleAddCart(prd.id, prd.name, prd.price)}><AddShoppingCartIcon color={green500} /></IconButton>);
-      const btnNotify = (<IconButton><AlarmAddIcon /></IconButton>);
-      const productImage = (<Avatar src={prd.picture} />);
-      return (
-        <div key={i}>
-          <Divider inset={true} />
-          <ListItem
-            primaryText={primaryText}
-            secondaryText={secondaryText}
-            secondaryTextLines={2}
-            leftAvatar={productImage}
-            rightIconButton={inStock ? btnAddToCart : btnNotify }
-          />
-        </div>
-      )
-    });
-
+    const items = products.map((prd, i) => <ShelfProduct prd={prd} key={prd.id} handleAddCart={this.handleAddCart} />);
     const categories = Object.keys(filters.categories).map((c, i) =>
       <MenuItem key={i}>
         <Checkbox
@@ -112,21 +55,21 @@ class Shelf extends Component {
           inputStyle={{top: 0}}
           label={`${c} — [${filters.categories[c]}]`}
           defaultChecked={this.props.categoryFilters.indexOf(c) >= 0}
-          onCheck={this.triggerFilterActions.bind(this)}
+          onCheck={this.handleFilterToggle}
         />
       </MenuItem>
     )
 
+    const breadcrumb = `${district} > ${aisle} > ${name}`;
+
     return (
       <List>
         <Subheader style={{display: 'flex'}}>
-          <span style={{flex: '1 0 0'}}>
-            {!total ? "Aucun produit" : (total > 1 ? `${total} produits` : '1 produit')} dans votre rayon ( {this.props.district} > {this.props.aisle} > {this.props.name} )
-          </span>
+          <ShelfInfoBar totalProducts={total} breadcrumb={breadcrumb} />
           <div style={{paddingRight: 8}}>
             <FlatButton
               label="Filtres"
-              onTouchTap={this.handleTouchTap.bind(this)}
+              onTouchTap={this.handleTouchTap}
               secondary={true}
               icon={<FiltersIcon />}
             />
@@ -135,7 +78,7 @@ class Shelf extends Component {
               anchorEl={this.state.anchorEl}
               anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
-              onRequestClose={this.handlePopoverRequestClose.bind(this)}
+              onRequestClose={this.handlePopoverRequestClose}
             >
               <Menu>{ categories }</Menu>
             </Popover>
@@ -146,12 +89,37 @@ class Shelf extends Component {
           open={this.state.snackbarOpen}
           message={this.state.snackbarMessage}
           autoHideDuration={4000}
-          onRequestClose={this.handleSnackbarRequestClose.bind(this)}
+          onRequestClose={this.handleSnackbarRequestClose}
         />
       </List>
     )
   }
 
+
+  handleAddCart(id, name, price){
+    return (e) => {
+      this.props.dispatch(addToCart({id, name, price}));
+      this.setState({ snackbarOpen: true, snackbarMessage: `« ${name} » ajouté au panier` })
+    }
+  }
+
+  handleTouchTap(e) {
+    this.setState({ filtersPopoverOpen: true, anchorEl: e.currentTarget });
+  }
+
+  handlePopoverRequestClose(){
+    this.setState({ filtersPopoverOpen: false });
+  }
+
+  handleSnackbarRequestClose(){
+    this.setState({ snackbarOpen: false });
+  }
+
+  handleFilterToggle(e, checked){
+    // TODO: find a cleaner way to store the filter name
+    const v = e.nativeEvent.target.nextSibling.textContent.split(' — ')[0];
+    this.props.dispatch(checked ? addCategoryFilter(v) : removeCategoryFilter(v));
+  }
 }
 
 Shelf.propTypes = {
