@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectShelf, fetchShelfIfNeeded, openNav, closeNav, openCart, closeCart } from '../actions'
+import { selectShelf, fetchShelfIfNeeded, openNav, closeNav, openCart, closeCart, addAllCategoryFilters } from '../actions'
 import Navigation from '../components/Navigation'
 import ShoppingCart from '../components/ShoppingCart'
 import Shelf from '../components/Shelf'
@@ -35,6 +35,10 @@ class App extends Component {
     if (nextProps.selectedShelf !== this.props.selectedShelf) {
       const { dispatch, selectedShelf } = nextProps
       dispatch(fetchShelfIfNeeded(selectedShelf))
+      // if the shelf is cached, select all filters
+      if (nextProps.filters.categories) {
+        dispatch(addAllCategoryFilters(Object.keys(nextProps.filters.categories)))
+      }
     }
   }
 

@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
-import {addToCart} from '../actions';
+import {addToCart, addCategoryFilter, removeCategoryFilter, addAllCategoryFilters, removeAllCategoryFilters} from '../actions';
 
 import {ProductLabel} from './ProductLabel';
 import {ProductPrice} from './ProductPrice';
@@ -51,6 +51,17 @@ class Shelf extends Component {
     this.setState({ open: false });
   }
 
+  triggerFilterActions(e, checked){
+    const v = e.nativeEvent.target.nextSibling.textContent.split(' — ')[0];
+    this.props.dispatch(
+      checked ? addCategoryFilter(v) : removeCategoryFilter(v)
+    )
+  }
+
+  componentDidMount(){
+    this.props.dispatch(addAllCategoryFilters(Object.keys(this.props.filters.categories)))
+  }
+
   render() {
     const { products, filters } = this.props;
     const total = products.length;
@@ -79,18 +90,29 @@ class Shelf extends Component {
 
     const categories = Object.keys(filters.categories).map((c, i) =>
       <MenuItem key={i}>
-        <Checkbox style={{padding:'8px 0'}} inputStyle={{top: 0}} label={`${c} (${filters.categories[c]})`} defaultChecked={true} />
+        <Checkbox
+          style={{padding:'8px 0'}}
+          inputStyle={{top: 0}}
+          label={`${c} — [${filters.categories[c]}]`}
+          defaultChecked={this.props.categoryFilters.indexOf(c) >= 0}
+          onCheck={this.triggerFilterActions.bind(this)}
+        />
       </MenuItem>
     )
 
     return (
       <List>
         <Subheader style={{display: 'flex'}}>
-          <span>
+          <span style={{flex: '1 0 0'}}>
             {!total ? "Aucun produit" : (total > 1 ? `${total} produits` : '1 produit')} dans votre rayon ( {this.props.district} > {this.props.aisle} > {this.props.name} )
           </span>
-          <div style={{flex: '1 0 0', textAlign: 'right', paddingRight: 8}}>
-            <FlatButton label="Filtres" onTouchTap={this.handleTouchTap.bind(this)} secondary={true} icon={<FiltersIcon />} />
+          <div style={{paddingRight: 8}}>
+            <FlatButton
+              label="Filtres"
+              onTouchTap={this.handleTouchTap.bind(this)}
+              secondary={true}
+              icon={<FiltersIcon />}
+            />
             <Popover
               open={this.state.open}
               anchorEl={this.state.anchorEl}
@@ -116,4 +138,18 @@ Shelf.propTypes = {
   dispatch: PropTypes.func.isRequired
 }
 
-export default connect()(Shelf)
+function mapStateToProps(state){
+  const { categoryFilters, shelves, selectedShelf } = state;
+  const filtered = shelves[selectedShelf].items.filter((p)=>{
+    if(!p.category || p.category === 'null'){
+      return true; // dont filter uncategorized
+    }
+    return (categoryFilters.indexOf(p.category) >= 0)
+  });
+  return {
+    categoryFilters,
+    products: filtered
+  }
+}
+
+export default connect(mapStateToProps)(Shelf)

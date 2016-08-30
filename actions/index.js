@@ -15,6 +15,39 @@ export const CLOSE_NAV = 'CLOSE_NAV'
 export const OPEN_CART = 'OPEN_CART'
 export const CLOSE_CART = 'CLOSE_CART'
 
+export const ADD_CATEGORY_FILTER = 'ADD_CATEGORY_FILTER'
+export const REMOVE_CATEGORY_FILTER = 'REMOVE_CATEGORY_FILTER'
+
+export const ADD_ALL_CATEGORY_FILTERS = 'ADD_ALL_CATEGORY_FILTERS'
+export const REMOVE_ALL_CATEGORY_FILTERS = 'REMOVE_ALL_CATEGORY_FILTERS'
+
+export function addAllCategoryFilters(list) {
+  return {
+    type: ADD_ALL_CATEGORY_FILTERS,
+    list
+  }
+}
+
+export function removeAllCategoryFilters() {
+  return {
+    type: REMOVE_ALL_CATEGORY_FILTERS
+  }
+}
+
+export function addCategoryFilter(name) {
+  return {
+    type: ADD_CATEGORY_FILTER,
+    name
+  }
+}
+
+export function removeCategoryFilter(name) {
+  return {
+    type: REMOVE_CATEGORY_FILTER,
+    name
+  }
+}
+
 export function selectShelf(id) {
   return {
     type: SELECT_SHELF,
@@ -70,7 +103,11 @@ export const removeFromCart = (id) => {
 }
 
 function parseCategories(products){
-  return _.countBy(products, 'category');
+  const data = _.countBy(products, 'category');
+  if(data['null']){
+    delete data['null'];
+  }
+  return data;
 }
 
 function fetchShelf(id) {
@@ -95,7 +132,7 @@ function fetchShelf(id) {
 
 function shouldFetchShelf(state, id) {
   const shelf = state.shelves[id]
-  if (shelf || (shelf && shelf.isFetching) || (shelf && !shelf.error)) {
+  if (shelf || (shelf && shelf.isFetching)) {
     return false
   }
   return true
@@ -103,6 +140,7 @@ function shouldFetchShelf(state, id) {
 
 export function fetchShelfIfNeeded(id) {
   return (dispatch, getState) => {
+    dispatch(removeAllCategoryFilters())
     if (shouldFetchShelf(getState(), id)) {
       return dispatch(fetchShelf(id))
     }
