@@ -1,41 +1,37 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import {
-  selectShelf,
-  fetchShelfIfNeeded,
+  selectShelf, fetchShelfIfNeeded,
+  openCart, closeCart, removeFromCart,
   openNav, closeNav,
-  openCart, closeCart,
   addAllCategoryFilters,
-  removeFromCart
 } from '../actions';
 
-import { Loader } from '../components/Loader'
-import { ErrorMessage } from '../components/ErrorMessage'
-import { Navigation } from '../components/Navigation'
-import { ShoppingCart } from '../components/ShoppingCart'
-import Shelf from './Shelf'
+import {
+  Loader,
+  ErrorMessage,
+  Navigation,
+  ShoppingCart,
+  ShoppingCartButton
+} from '../components';
+
+import Shelf from './Shelf';
 
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
-import {red500, deepPurple500, indigo500, white500} from 'material-ui/styles/colors';
+import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
-import ShoppingCartIcon from 'material-ui/svg-icons/action/shopping-cart';
-import Drawer from 'material-ui/Drawer';
-import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
+import { red500, deepPurple500, indigo500, white500 } from 'material-ui/styles/colors';
 
 class App extends Component {
+
   constructor(props) {
-    super(props)
-    this.handleShelfChange = this.handleShelfChange.bind(this)
-    this.handleOpenNav = this.handleOpenNav.bind(this)
-    this.handleCloseNav = this.handleCloseNav.bind(this)
-    this.handleOpenCart = this.handleOpenCart.bind(this)
-    this.handleCloseCart = this.handleCloseCart.bind(this)
-    this.handleRemoveFromCart = this.handleRemoveFromCart.bind(this)
+    super(props);
+    _.bindAll(this, 'handleShelfChange', 'handleOpenNav', 'handleCloseNav', 'handleOpenCart', 'handleCloseCart', 'handleRemoveFromCart');
   }
 
   componentDidMount() {
@@ -47,16 +43,57 @@ class App extends Component {
     if (nextProps.selectedShelf !== this.props.selectedShelf) {
       const { dispatch, selectedShelf } = nextProps
       dispatch(fetchShelfIfNeeded(selectedShelf))
-      // if the shelf is cached, select all filters
+      // if the shelf is cached, pre-select all filters
       if (nextProps.filters.categories) {
         dispatch(addAllCategoryFilters(Object.keys(nextProps.filters.categories)))
       }
     }
   }
 
-  handleShelfChange(ev, item) {
+  render() {
+    const { selectedShelf, name, products, district, aisle, isFetching, error, filters, cart } = this.props;
+
+    // TODO: move to config.json
+    const headerTitle = "AuchanDirect.fr";
+
+    // TODO: postcss
+    const paperStyles = { margin: "0 auto", minHeight: 300 };
+
+    // TODO: create ui/colors.js
+    const secondaryAppBarStyles = { backgroundColor: deepPurple500 };
+
+    const HeaderLeftIcon = <IconButton onTouchTap={this.handleOpenNav}><MenuIcon /></IconButton>;
+    const HeaderRightIcon = <ShoppingCartButton handleOpenCart={this.handleOpenCart} total={cart.length} />;
+    const NavigationCloseButton = <IconButton onTouchTap={this.handleCloseNav}><CloseIcon /></IconButton>;
+    const ShoppingCartCloseButton = <IconButton onTouchTap={this.handleCloseCart}><CloseIcon /></IconButton>;
+    const DisplayLoader = <Loader />;
+    const DisplayErrorMessage = <ErrorMessage text={"Une erreur technique est survenue"} />;
+    const DisplayShelf = <Shelf products={products} name={name} district={district} aisle={aisle} filters={filters} />;
+
+    return (
+      <Paper style={paperStyles}>
+
+        <AppBar title={headerTitle} iconElementLeft={HeaderLeftIcon} iconElementRight={HeaderRightIcon} />
+
+        { isFetching ? DisplayLoader : (error ? DisplayErrorMessage : DisplayShelf) }
+
+        <Drawer open={this.props.ui.navOpen} docked={false}>
+          <AppBar title="Rayons" style={secondaryAppBarStyles} iconElementLeft={NavigationCloseButton} />
+          <Navigation selected={selectedShelf} handleShelfChange={this.handleShelfChange} />
+        </Drawer>
+
+        <Drawer open={this.props.ui.cartOpen} width={340} openSecondary={true}>
+          <AppBar title="Panier" style={secondaryAppBarStyles} showMenuIconButton={false} iconElementRight={ShoppingCartCloseButton} />
+          <ShoppingCart items={cart} handleRemoveFromCart={this.handleRemoveFromCart} />
+        </Drawer>
+
+      </Paper>
+    )
+  }
+
+  handleShelfChange(id) {
     const { dispatch } = this.props
-    dispatch(selectShelf(item.props.value.toString()))
+    dispatch(selectShelf(id))
     dispatch(closeNav())
   }
 
@@ -68,8 +105,8 @@ class App extends Component {
     this.props.dispatch(closeCart())
   }
 
-  handleRemoveFromCart(ev, item, itemIdx){
-    this.props.dispatch(removeFromCart(item.props.value));
+  handleRemoveFromCart(id){
+    this.props.dispatch(removeFromCart(id));
   }
 
   handleOpenNav() {
@@ -79,43 +116,6 @@ class App extends Component {
   handleCloseNav() {
     this.props.dispatch(closeNav())
   }
-
-  render() {
-    const { selectedShelf, products, name, district, aisle, filters, isFetching, error, cart } = this.props;
-
-    return (
-      <Paper style={{margin: "0 auto", minHeight: "300px" }}>
-
-        <AppBar
-          title="AuchanDirect.fr"
-          iconElementLeft={<IconButton onTouchTap={this.handleOpenNav}><MenuIcon /></IconButton>}
-          iconElementRight={
-            <Chip style={{margin: '8px 4px 0 0'}} onTouchTap={this.handleOpenCart} backgroundColor={white500}>
-              <Avatar color={white500} backgroundColor={deepPurple500} icon={<ShoppingCartIcon />} />
-              {cart.length}
-            </Chip>
-          }
-        />
-
-        {
-          isFetching ?
-            <Loader /> :
-            (error ? <ErrorMessage text={"Une erreur technique est survenue"} /> : <Shelf products={products} name={name} district={district} aisle={aisle} filters={filters} />)
-        }
-
-        <Drawer with={180} open={this.props.ui.navOpen} docked={false}>
-          <AppBar style={{backgroundColor:deepPurple500}} title="Rayons" iconElementLeft={<IconButton onTouchTap={this.handleCloseNav}><CloseIcon /></IconButton>} />
-          <Navigation value={selectedShelf} handleShelfChange={this.handleShelfChange} />
-        </Drawer>
-
-        <Drawer width={340} openSecondary={true} open={this.props.ui.cartOpen}>
-          <AppBar style={{backgroundColor:deepPurple500}} title="Panier" showMenuIconButton={false} iconElementRight={<IconButton onTouchTap={this.handleCloseCart}><CloseIcon /></IconButton>} />
-          <ShoppingCart items={cart} handleRemoveFromCart={this.handleRemoveFromCart} />
-        </Drawer>
-
-      </Paper>
-    )
-  }
 }
 
 App.propTypes = {
@@ -123,42 +123,20 @@ App.propTypes = {
   products: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
-  ui: PropTypes.object.isRequired
+  ui: PropTypes.object.isRequired,
+  name: PropTypes.string,
+  district: PropTypes.string,
+  aisle: PropTypes.string,
+  error: PropTypes.bool,
+  filters: PropTypes.object,
+  cart: PropTypes.array.isRequired,
 }
 
 function mapStateToProps(state) {
-  const { selectedShelf, shelves, ui, cart } = state
-
-  const {
-    isFetching,
-    name,
-    district,
-    aisle,
-    error,
-    filters,
-    items: products
-  } = shelves[selectedShelf] || {
-    isFetching: true,
-    items: [],
-    filters: [],
-    name: "",
-    district: "",
-    aisle: "",
-    error: false
-  }
-
-  return {
-    selectedShelf,
-    products,
-    name,
-    district,
-    aisle,
-    isFetching,
-    filters,
-    error,
-    ui,
-    cart
-  }
+  const emptyShelf = { isFetching: true, items: [], filters: {}, name: "", district: "", aisle: "", error: false };
+  const { selectedShelf, shelves, ui, cart } = state;
+  const { isFetching, name, district, aisle, error, filters, items: products } = shelves[selectedShelf] || emptyShelf;
+  return { selectedShelf, isFetching, error, name, aisle, district, products, filters, ui, cart };
 }
 
 export default connect(mapStateToProps)(App)

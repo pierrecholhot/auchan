@@ -10,7 +10,8 @@ const initialState = {
   items: [],
   name: "",
   district: "",
-  aisle: ""
+  aisle: "",
+  filters: {}
 };
 
 function shelf(state = initialState, action) {

@@ -11,9 +11,13 @@ export const ShoppingCart = ({items, handleRemoveFromCart}) => {
   const totalPrice = items.reduce((total, item) => (item.price + total), 0);
   const labelStyles = { maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' };
 
+  const onItemTouchTap = (ev, item, itemIdx) => {
+    handleRemoveFromCart(item.props.value);
+  }
+
   return (
     <div>
-      <Menu style={{width: 320}} onItemTouchTap={handleRemoveFromCart}>
+      <Menu style={{width: 320}} onItemTouchTap={onItemTouchTap}>
         {
           items.map(({id, name, price}, i) =>
             <MenuItem
