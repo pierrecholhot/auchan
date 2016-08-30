@@ -116,7 +116,7 @@ function fetchShelf(id) {
     return fetch(`https://beta.auchandirect.fr/backend/api/v2/shelves/${id}?shop_id=11223`)
       .then(function(response) {
           if (response.status >= 400) {
-              return { error: "Bad response from server" };
+              return { error: true };
           }
           return response.json();
       })

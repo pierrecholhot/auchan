@@ -44,7 +44,7 @@ class Shelf extends Component {
       this.props.dispatch(addToCart({id, name, price}));
       this.setState({
         snackbarOpen: true,
-        snackbarMessage: `${name} ajouté au panier`
+        snackbarMessage: `« ${name} » ajouté au panier`
       })
     }
   }

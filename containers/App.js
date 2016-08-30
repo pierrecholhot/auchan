@@ -91,7 +91,7 @@ class App extends Component {
         {
           isFetching ?
             <Loader /> :
-            (error ? <ErrorMessage text={error} /> : <Shelf products={products} name={name} district={district} aisle={aisle} filters={filters} />)
+            (error ? <ErrorMessage text={"Une erreur technique est survenue"} /> : <Shelf products={products} name={name} district={district} aisle={aisle} filters={filters} />)
         }
 
         <Drawer with={180} open={this.props.ui.navOpen} docked={false}>
