@@ -1,12 +1,18 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
-import {addToCart, addCategoryFilter, removeCategoryFilter, addAllCategoryFilters, removeAllCategoryFilters} from '../actions';
+import {
+  addToCart,
+  addCategoryFilter,
+  removeCategoryFilter,
+  addAllCategoryFilters,
+  removeAllCategoryFilters
+} from '../../actions';
 
-import {ProductLabel} from './ProductLabel';
-import {ProductPrice} from './ProductPrice';
-import {ProductOutOfStock} from './ProductOutOfStock';
-import {ProductCategory} from './ProductCategory';
+import {ProductLabel} from '../../components/ProductLabel';
+import {ProductPrice} from '../../components/ProductPrice';
+import {ProductOutOfStock} from '../../components/ProductOutOfStock';
+import {ProductCategory} from '../../components/ProductCategory';
 
 import { List, ListItem } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';

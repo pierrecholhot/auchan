@@ -1,11 +1,21 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectShelf, fetchShelfIfNeeded, openNav, closeNav, openCart, closeCart, addAllCategoryFilters, removeFromCart } from '../actions'
-import Navigation from '../components/Navigation'
-import ShoppingCart from '../components/ShoppingCart'
-import Shelf from '../components/Shelf'
+
+import {
+  selectShelf,
+  fetchShelfIfNeeded,
+  openNav, closeNav,
+  openCart, closeCart,
+  addAllCategoryFilters,
+  removeFromCart
+} from '../actions';
+
 import { Loader } from '../components/Loader'
 import { ErrorMessage } from '../components/ErrorMessage'
+import { Navigation } from '../components/Navigation'
+import { ShoppingCart } from '../components/ShoppingCart'
+import Shelf from './Shelf'
+
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
 import {red500, deepPurple500, indigo500, white500} from 'material-ui/styles/colors';
@@ -15,13 +25,12 @@ import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import ShoppingCartIcon from 'material-ui/svg-icons/action/shopping-cart';
 import Drawer from 'material-ui/Drawer';
 import Avatar from 'material-ui/Avatar';
-import Divider from 'material-ui/Divider';
 import Chip from 'material-ui/Chip';
 
 class App extends Component {
   constructor(props) {
     super(props)
-    this.handleChange = this.handleChange.bind(this)
+    this.handleShelfChange = this.handleShelfChange.bind(this)
     this.handleOpenNav = this.handleOpenNav.bind(this)
     this.handleCloseNav = this.handleCloseNav.bind(this)
     this.handleOpenCart = this.handleOpenCart.bind(this)
@@ -45,9 +54,9 @@ class App extends Component {
     }
   }
 
-  handleChange(nextID) {
+  handleShelfChange(ev, item) {
     const { dispatch } = this.props
-    dispatch(selectShelf(nextID))
+    dispatch(selectShelf(item.props.value.toString()))
     dispatch(closeNav())
   }
 
@@ -96,7 +105,7 @@ class App extends Component {
 
         <Drawer with={180} open={this.props.ui.navOpen} docked={false}>
           <AppBar style={{backgroundColor:deepPurple500}} title="Rayons" iconElementLeft={<IconButton onTouchTap={this.handleCloseNav}><CloseIcon /></IconButton>} />
-          <Navigation value={selectedShelf} onChange={this.handleChange} />
+          <Navigation value={selectedShelf} handleShelfChange={this.handleShelfChange} />
         </Drawer>
 
         <Drawer width={340} openSecondary={true} open={this.props.ui.cartOpen}>
