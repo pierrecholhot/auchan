@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectShelf, fetchShelfIfNeeded, openNav, closeNav, openCart, closeCart, addAllCategoryFilters } from '../actions'
+import { selectShelf, fetchShelfIfNeeded, openNav, closeNav, openCart, closeCart, addAllCategoryFilters, removeFromCart } from '../actions'
 import Navigation from '../components/Navigation'
 import ShoppingCart from '../components/ShoppingCart'
 import Shelf from '../components/Shelf'
@@ -8,13 +8,15 @@ import { Loader } from '../components/Loader'
 import { ErrorMessage } from '../components/ErrorMessage'
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
-import {red500, deepPurple500} from 'material-ui/styles/colors';
+import {red500, deepPurple500, indigo500, white500} from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import ShoppingCartIcon from 'material-ui/svg-icons/action/shopping-cart';
 import Drawer from 'material-ui/Drawer';
+import Avatar from 'material-ui/Avatar';
 import Divider from 'material-ui/Divider';
+import Chip from 'material-ui/Chip';
 
 class App extends Component {
   constructor(props) {
@@ -24,6 +26,7 @@ class App extends Component {
     this.handleCloseNav = this.handleCloseNav.bind(this)
     this.handleOpenCart = this.handleOpenCart.bind(this)
     this.handleCloseCart = this.handleCloseCart.bind(this)
+    this.handleRemoveFromCart = this.handleRemoveFromCart.bind(this)
   }
 
   componentDidMount() {
@@ -56,6 +59,10 @@ class App extends Component {
     this.props.dispatch(closeCart())
   }
 
+  handleRemoveFromCart(ev, item, itemIdx){
+    this.props.dispatch(removeFromCart(item.props.value));
+  }
+
   handleOpenNav() {
     this.props.dispatch(openNav())
   }
@@ -65,7 +72,7 @@ class App extends Component {
   }
 
   render() {
-    const { selectedShelf, products, name, district, aisle, filters, isFetching, error } = this.props;
+    const { selectedShelf, products, name, district, aisle, filters, isFetching, error, cart } = this.props;
 
     return (
       <Paper style={{margin: "0 auto", minHeight: "300px" }}>
@@ -73,7 +80,12 @@ class App extends Component {
         <AppBar
           title="AuchanDirect.fr"
           iconElementLeft={<IconButton onTouchTap={this.handleOpenNav}><MenuIcon /></IconButton>}
-          iconElementRight={<IconButton onTouchTap={this.handleOpenCart}><ShoppingCartIcon /></IconButton>}
+          iconElementRight={
+            <Chip style={{margin: '8px 4px 0 0'}} onTouchTap={this.handleOpenCart} backgroundColor={white500}>
+              <Avatar color={white500} backgroundColor={deepPurple500} icon={<ShoppingCartIcon />} />
+              {cart.length}
+            </Chip>
+          }
         />
 
         {
@@ -89,7 +101,7 @@ class App extends Component {
 
         <Drawer width={340} openSecondary={true} open={this.props.ui.cartOpen}>
           <AppBar style={{backgroundColor:deepPurple500}} title="Panier" showMenuIconButton={false} iconElementRight={<IconButton onTouchTap={this.handleCloseCart}><CloseIcon /></IconButton>} />
-          <ShoppingCart />
+          <ShoppingCart items={cart} handleRemoveFromCart={this.handleRemoveFromCart} />
         </Drawer>
 
       </Paper>
@@ -106,7 +118,7 @@ App.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { selectedShelf, shelves, ui } = state
+  const { selectedShelf, shelves, ui, cart } = state
 
   const {
     isFetching,
@@ -135,7 +147,8 @@ function mapStateToProps(state) {
     isFetching,
     filters,
     error,
-    ui
+    ui,
+    cart
   }
 }
 

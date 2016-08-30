@@ -6,18 +6,7 @@ import Subheader from 'material-ui/Subheader';
 import { lightBlack, green500 } from 'material-ui/styles/colors';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 
-import {removeFromCart} from '../actions';
-
-class ShoppingCart extends Component {
-
-  constructor(props) {
-    super(props)
-    this.handleRemoveCart = this.handleRemoveCart.bind(this);
-  }
-
-  handleRemoveCart(ev, item, itemIdx){
-    this.props.dispatch(removeFromCart(item.props.value));
-  }
+export default class ShoppingCart extends Component {
 
   render() {
     const { items } = this.props;
@@ -26,7 +15,7 @@ class ShoppingCart extends Component {
 
     return (
       <div>
-        <Menu style={{width: 320}} onItemTouchTap={this.handleRemoveCart}>
+        <Menu style={{width: 320}} onItemTouchTap={this.props.handleRemoveFromCart}>
           {
             items.map(({id, name, price}, i) =>
               <MenuItem
@@ -44,11 +33,3 @@ class ShoppingCart extends Component {
     )
   }
 }
-
-function mapStateToProps(state){
-  return {
-    items: state.cart
-  }
-}
-
-export default connect(mapStateToProps)(ShoppingCart)
