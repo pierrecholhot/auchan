@@ -23,6 +23,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import Snackbar from 'material-ui/Snackbar';
 
 import { red500, green500, lightBlack } from 'material-ui/styles/colors';
 
@@ -32,23 +33,33 @@ class Shelf extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      open: false
+      filtersPopoverOpen: false,
+      snackbarOpen: false,
+      snackbarMessage: ""
     };
   }
 
   handleAddCart(id, name, price){
     return (e) => {
       this.props.dispatch(addToCart({id, name, price}));
+      this.setState({
+        snackbarOpen: true,
+        snackbarMessage: `${name} ajouté au panier`
+      })
     }
   }
 
   handleTouchTap(event) {
     event.preventDefault();
-    this.setState({ open: true, anchorEl: event.currentTarget });
+    this.setState({ filtersPopoverOpen: true, anchorEl: event.currentTarget });
   }
 
-  handleRequestClose(){
-    this.setState({ open: false });
+  handlePopoverRequestClose(){
+    this.setState({ filtersPopoverOpen: false });
+  }
+
+  handleSnackbarRequestClose(){
+    this.setState({ snackbarOpen: false });
   }
 
   triggerFilterActions(e, checked){
@@ -114,17 +125,23 @@ class Shelf extends Component {
               icon={<FiltersIcon />}
             />
             <Popover
-              open={this.state.open}
+              open={this.state.filtersPopoverOpen}
               anchorEl={this.state.anchorEl}
               anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
-              onRequestClose={this.handleRequestClose.bind(this)}
+              onRequestClose={this.handlePopoverRequestClose.bind(this)}
             >
               <Menu>{ categories }</Menu>
             </Popover>
           </div>
         </Subheader>
         { items }
+        <Snackbar
+          open={this.state.snackbarOpen}
+          message={this.state.snackbarMessage}
+          autoHideDuration={4000}
+          onRequestClose={this.handleSnackbarRequestClose.bind(this)}
+        />
       </List>
     )
   }
