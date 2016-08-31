@@ -12,16 +12,18 @@ import {
 import {
   ShelfProduct,
   ShelfInfoBar,
+  ShelfFilters,
 } from '@components'
 
 import { List } from 'material-ui/List'
 import Subheader from 'material-ui/Subheader'
-import Checkbox from 'material-ui/Checkbox'
-import FlatButton from 'material-ui/FlatButton'
+import Snackbar from 'material-ui/Snackbar'
+
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
+import Checkbox from 'material-ui/Checkbox'
+import FlatButton from 'material-ui/FlatButton'
 import MenuItem from 'material-ui/MenuItem'
-import Snackbar from 'material-ui/Snackbar'
 import FiltersIcon from 'material-ui/svg-icons/content/filter-list'
 
 import { COLOR_TERTIARY } from '@ui/colors'
@@ -30,7 +32,13 @@ class Shelf extends Component {
 
   constructor(props) {
     super(props)
-    _.bindAll(this, 'handleAddCart', 'handleTouchTap', 'handlePopoverRequestClose', 'handleSnackbarRequestClose', 'handleFilterToggle')
+    _.bindAll(this,
+      'handleAddToCart',
+      'handleFilterToggle',
+      'handlePopoverTrigger',
+      'handlePopoverRequestClose',
+      'handleSnackbarRequestClose',
+    )
 
     // TODO: create a reducer
     this.state = {
@@ -48,64 +56,53 @@ class Shelf extends Component {
 
   render() {
     const { products, district, aisle, name, filters } = this.props
-    const total = products.length
-    const items = products.map((prd, i) => <ShelfProduct prd={prd} key={prd.id} handleAddCart={this.handleAddCart} />)
-    const categories = Object.keys(filters.categories).map((c, i) =>
-      <MenuItem key={i}>
-        <Checkbox
-          style={{padding:'8px 0'}}
-          iconStyle={{fill: COLOR_TERTIARY}}
-          inputStyle={{top: 0}}
-          label={`${c} — [${filters.categories[c]}]`}
-          defaultChecked={this.props.categoryFilters.indexOf(c) >= 0}
-          onCheck={this.handleFilterToggle}
-        />
-      </MenuItem>
-    )
+    const { filtersPopoverOpen, anchorEl } = this.state
 
     return (
       <List>
         <Subheader style={{display: 'flex'}}>
-          <ShelfInfoBar totalProducts={total} breadcrumb={`${district} > ${aisle} > ${name}`} />
-          <div style={{paddingRight: 8}}>
-            <FlatButton
-              style={{color: COLOR_TERTIARY}}
-              label="Filtres"
-              onTouchTap={this.handleTouchTap}
-              icon={<FiltersIcon />}
-            />
-            <Popover
-              open={this.state.filtersPopoverOpen}
-              anchorEl={this.state.anchorEl}
-              anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'right', vertical: 'top'}}
-              onRequestClose={this.handlePopoverRequestClose}
-            >
-              <Menu>{ categories }</Menu>
-            </Popover>
-          </div>
+          <ShelfInfoBar
+            totalProducts={products.length}
+            breadcrumb={`${district} > ${aisle} > ${name}`}
+          />
+          <ShelfFilters
+            filters={filters}
+            popoverState={{ open: filtersPopoverOpen, anchorEl: anchorEl }}
+            handlePopoverTrigger={this.handlePopoverTrigger}
+            categoryFilters={this.props.categoryFilters}
+            handlePopoverRequestClose={this.handlePopoverRequestClose}
+            handleFilterToggle={this.handleFilterToggle}
+          />
         </Subheader>
-        { items }
+        {
+          products.map((product, i) =>
+            <ShelfProduct
+              p={product}
+              key={product.id}
+              handleAddToCart={this.handleAddToCart}
+            />
+          )
+        }
         <Snackbar
+          autoHideDuration={4000}
+          bodyStyle={{backgroundColor: COLOR_TERTIARY}}
           open={this.state.snackbarOpen}
           message={this.state.snackbarMessage}
-          autoHideDuration={4000}
           onRequestClose={this.handleSnackbarRequestClose}
-          bodyStyle={{backgroundColor: COLOR_TERTIARY}}
         />
       </List>
     )
   }
 
 
-  handleAddCart(id, name, price){
+  handleAddToCart(id, name, price){
     return (e) => {
       this.props.dispatch(addToCart({id, name, price}))
       this.setState({ snackbarOpen: true, snackbarMessage: `« ${name} » ajouté au panier` })
     }
   }
 
-  handleTouchTap(e) {
+  handlePopoverTrigger(e) {
     this.setState({ filtersPopoverOpen: true, anchorEl: e.currentTarget })
   }
 
@@ -133,10 +130,9 @@ Shelf.propTypes = {
 
 function mapStateToProps(state){
   const { categoryFilters, shelves, selectedShelf } = state
-  const filtered = shelves[selectedShelf].items.filter((p)=>{
-    if(!p.category || p.category === 'null'){
-      return true // dont filter uncategorized
-    }
+  const filtered = shelves[selectedShelf].items.filter((p) => {
+    // never hide those who don't have a category
+    if (!p.category) { return true }
     return (categoryFilters.indexOf(p.category) >= 0)
   });
   return {

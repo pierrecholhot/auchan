@@ -15,16 +15,16 @@ import AlarmAddIcon from 'material-ui/svg-icons/action/alarm-add'
 import IconButton from 'material-ui/IconButton'
 import { COLOR_SECONDARY } from '@ui/colors'
 
-export const ShelfProduct = ({prd, handleAddCart}) => {
+export const ShelfProduct = ({p, handleAddToCart}) => {
 
-  const inStock = !!prd.stock
-  const primaryText = <ProductLabel name={prd.name} portion={prd.portion_description} brand={prd.brand} />
-  const Price = <ProductPrice price={prd.price} promotion={prd.promotion} />
-  const category = <ProductCategory category={prd.category} />
-  const secondaryText = <p> { (inStock && !!prd.price) ? Price : <ProductOutOfStock /> } <br /> { prd.category && category } </p>
-  const btnAddToCart = <IconButton onTouchTap={handleAddCart(prd.id, prd.name, prd.price)}><AddShoppingCartIcon color={COLOR_SECONDARY} /></IconButton>
+  const inStock = !!p.stock
+  const primaryText = <ProductLabel name={p.name} portion={p.portion_description} brand={p.brand} />
+  const Price = <ProductPrice price={p.price} promotion={p.promotion} />
+  const category = <ProductCategory category={p.category} />
+  const secondaryText = <p> { (inStock && !!p.price) ? Price : <ProductOutOfStock /> } <br /> { p.category && category } </p>
+  const btnAddToCart = <IconButton onTouchTap={handleAddToCart(p.id, p.name, p.price)}><AddShoppingCartIcon color={COLOR_SECONDARY} /></IconButton>
   const btnNotify = <IconButton><AlarmAddIcon /></IconButton>
-  const productImage = <Avatar src={prd.picture} />
+  const productImage = <Avatar src={p.picture} />
 
   return (
     <div>
@@ -41,6 +41,6 @@ export const ShelfProduct = ({prd, handleAddCart}) => {
 }
 
 ShelfProduct.propTypes = {
-  prd: PropTypes.object.isRequired,
-  handleAddCart: PropTypes.func.isRequired,
+  p: PropTypes.object.isRequired,
+  handleAddToCart: PropTypes.func.isRequired,
 }
