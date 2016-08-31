@@ -2,7 +2,7 @@ import {
   REQUEST_SHELF,
   REQUEST_SHELF_ERROR,
   REQUEST_SHELF_SUCCESS,
-} from '../actions'
+} from '@actions'
 
 const initialState = {
   isFetching:false,

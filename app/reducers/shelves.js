@@ -1,10 +1,10 @@
-import shelf from './shelf'
+import shelf from '@reducers/shelf'
 
 import {
   REQUEST_SHELF,
   REQUEST_SHELF_ERROR,
   REQUEST_SHELF_SUCCESS
-} from '../actions'
+} from '@actions'
 
 function shelves(state = {}, action) {
   switch (action.type) {

@@ -1,11 +1,11 @@
-import React, {PropTypes} from 'react';
+import React, {PropTypes} from 'react'
 
 import {
   ProductLabel,
   ProductPrice,
   ProductOutOfStock,
   ProductCategory
-} from '../'
+} from '@components'
 
 import { ListItem } from 'material-ui/List'
 import Divider from 'material-ui/Divider'
@@ -13,7 +13,7 @@ import Avatar from 'material-ui/Avatar'
 import AddShoppingCartIcon from 'material-ui/svg-icons/action/add-shopping-cart'
 import AlarmAddIcon from 'material-ui/svg-icons/action/alarm-add'
 import IconButton from 'material-ui/IconButton'
-import { COLOR_SECONDARY } from '../../ui/colors'
+import { COLOR_SECONDARY } from '@ui/colors'
 
 export const ShelfProduct = ({prd, handleAddCart}) => {
 

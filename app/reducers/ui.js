@@ -3,7 +3,7 @@ import {
   CLOSE_NAV,
   OPEN_CART,
   CLOSE_CART
-} from '../actions'
+} from '@actions'
 
 const initialState = {
   navOpen: false,

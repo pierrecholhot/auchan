@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import { COLOR_FG_SECONDARY, COLOR_SECONDARY } from '../../ui/colors'
+import { COLOR_FG_SECONDARY, COLOR_SECONDARY } from '@ui/colors'
 
 export const ProductPrice = ({price, promotion}) => {
   const styles = {

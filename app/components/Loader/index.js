@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import RefreshIndicator from 'material-ui/RefreshIndicator'
-import { COLOR_PRIMARY, COLOR_FG_SECONDARY } from '../../ui/colors'
+import { COLOR_PRIMARY, COLOR_FG_SECONDARY } from '@ui/colors'
 
 export const Loader = () => {
   const style = {

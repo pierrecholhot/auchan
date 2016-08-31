@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 
-import selectedShelf from './selectedShelf'
-import shelves from './shelves'
-import cart from './cart'
-import ui from './ui'
-import categoryFilters from './categoryFilters'
+import ui from '@reducers/ui'
+import cart from '@reducers/cart'
+import shelves from '@reducers/shelves'
+import selectedShelf from '@reducers/selectedShelf'
+import categoryFilters from '@reducers/categoryFilters'
 
 const rootReducer = combineReducers({
   ui,

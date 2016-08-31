@@ -7,7 +7,7 @@ import {
   openCart, closeCart, removeFromCart,
   openNav, closeNav,
   addAllCategoryFilters,
-} from '../actions'
+} from '@actions'
 
 import {
   Loader,
@@ -15,9 +15,9 @@ import {
   Navigation,
   ShoppingCart,
   ShoppingCartButton
-} from '../components'
+} from '@components'
 
-import Shelf from './Shelf'
+import Shelf from '@containers/Shelf'
 
 import AppBar from 'material-ui/AppBar'
 import Paper from 'material-ui/Paper'
@@ -26,7 +26,7 @@ import IconButton from 'material-ui/IconButton'
 import MenuIcon from 'material-ui/svg-icons/navigation/menu'
 import CloseIcon from 'material-ui/svg-icons/navigation/close'
 
-import { COLOR_PRIMARY, COLOR_SECONDARY } from '../ui/colors'
+import { COLOR_PRIMARY, COLOR_SECONDARY } from '@ui/colors'
 
 class App extends Component {
 

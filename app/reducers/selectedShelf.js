@@ -1,4 +1,4 @@
-import { SELECT_SHELF } from '../actions'
+import { SELECT_SHELF } from '@actions'
 
 const initialState = '23'
 

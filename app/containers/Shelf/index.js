@@ -7,12 +7,12 @@ import {
   removeCategoryFilter,
   addAllCategoryFilters,
   removeAllCategoryFilters
-} from '../../actions'
+} from '@actions'
 
 import {
   ShelfProduct,
   ShelfInfoBar,
-} from '../../components'
+} from '@components'
 
 import { List } from 'material-ui/List'
 import Subheader from 'material-ui/Subheader'
@@ -24,7 +24,7 @@ import MenuItem from 'material-ui/MenuItem'
 import Snackbar from 'material-ui/Snackbar'
 import FiltersIcon from 'material-ui/svg-icons/content/filter-list'
 
-import { COLOR_TERTIARY } from '../../ui/colors'
+import { COLOR_TERTIARY } from '@ui/colors'
 
 class Shelf extends Component {
 

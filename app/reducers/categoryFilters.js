@@ -3,7 +3,7 @@ import {
   REMOVE_CATEGORY_FILTER,
   ADD_ALL_CATEGORY_FILTERS,
   REMOVE_ALL_CATEGORY_FILTERS
-} from '../actions'
+} from '@actions'
 
 const initialState = []
 

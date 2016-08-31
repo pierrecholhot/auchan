@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch'
 import _ from 'lodash'
-import { countByKey } from '../helpers'
-import { removeAllCategoryFilters } from './categoryFilters'
+import { countByKey } from '@helpers'
+import { removeAllCategoryFilters } from '@actions'
 
 export const REQUEST_SHELF = 'REQUEST_SHELF'
 export const REQUEST_SHELF_SUCCESS = 'REQUEST_SHELF_SUCCESS'

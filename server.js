@@ -20,7 +20,7 @@ app.listen(port, function(error) {
   if (error) {
     console.error(error);
   } else {
-    console.info("[%s] ready at [%s]", pkg.name, url);
+    console.info("[%s] ready at [%s]\n", pkg.name, url);
     spawn('open', [url]);
   }
 })
