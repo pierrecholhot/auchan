@@ -1,5 +1,5 @@
-# auchan
-AuchanDirect.fr technical job interview
+# AuchanDirect.fr
+technical job interview
 
 
 ## run
@@ -8,3 +8,9 @@ AuchanDirect.fr technical job interview
 npm install
 npm start
 ```
+
+then navigate to [http://localhost:3000/](http://localhost:3000/)
+
+
+## credits
+made by [pierre.cx](http://pierre.cx)
