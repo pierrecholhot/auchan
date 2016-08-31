@@ -6,10 +6,10 @@ export const ErrorMessage = ({text}) => {
     style: {
       strokeDasharray: 1000,
       strokeDashoffset: 1000,
-      animation: 'dash 6s ease-in alternate infinite'
+      animation: 'dash 12s ease-in alternate infinite'
     },
     stroke: '#F5A220',
-    strokeWidth: 0.5
+    strokeWidth: 0.3
   }
   return (
     <div style={{textAlign: "center", margin: 32, textTransform: 'lowercase', fontVariant: 'small-caps'}}>

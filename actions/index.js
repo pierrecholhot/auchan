@@ -112,11 +112,11 @@ function parseCategories(products){
 
 function fetchShelf(id) {
   return dispatch => {
-    dispatch(requestShelf(id))
+    dispatch(requestShelf(id));
     return fetch(`https://beta.auchandirect.fr/backend/api/v2/shelves/${id}?shop_id=11223`)
       .then(function(response) {
-          if (response.status >= 400) {
-              return { error: true };
+          if (response.status < 200 || response.status >= 300) {
+            return { error: true };
           }
           return response.json();
       })
@@ -126,6 +126,9 @@ function fetchShelf(id) {
         }else{
           dispatch(receiveShelf(id, json));
         }
+      })
+      .catch(function(error) {
+        dispatch(shelfError(id, { error: true }));
       })
   }
 }
