@@ -13,7 +13,7 @@ import Avatar from 'material-ui/Avatar';
 import AddShoppingCartIcon from 'material-ui/svg-icons/action/add-shopping-cart';
 import AlarmAddIcon from 'material-ui/svg-icons/action/alarm-add';
 import IconButton from 'material-ui/IconButton';
-import { teal400 } from 'material-ui/styles/colors';
+import { COLOR_SECONDARY } from '../../helpers/ui/colors';
 
 export const ShelfProduct = ({prd, handleAddCart}) => {
 
@@ -22,7 +22,7 @@ export const ShelfProduct = ({prd, handleAddCart}) => {
   const Price = (<ProductPrice price={prd.price} promotion={prd.promotion} />);
   const category = (<ProductCategory category={prd.category} />);
   const secondaryText = (<p> { (inStock && !!prd.price) ? Price : <ProductOutOfStock /> } <br /> { prd.category && category } </p>);
-  const btnAddToCart = (<IconButton onTouchTap={handleAddCart(prd.id, prd.name, prd.price)}><AddShoppingCartIcon color={teal400} /></IconButton>);
+  const btnAddToCart = (<IconButton onTouchTap={handleAddCart(prd.id, prd.name, prd.price)}><AddShoppingCartIcon color={COLOR_SECONDARY} /></IconButton>);
   const btnNotify = (<IconButton><AlarmAddIcon /></IconButton>);
   const productImage = (<Avatar src={prd.picture} />);
 

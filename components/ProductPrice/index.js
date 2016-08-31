@@ -1,9 +1,9 @@
 import React, {PropTypes} from 'react';
-import { lightBlack, teal400 } from 'material-ui/styles/colors';
+import { COLOR_FG_SECONDARY, COLOR_SECONDARY } from '../../helpers/ui/colors';
 
 export const ProductPrice = ({price, promotion}) => {
   const styles = {
-    color: promotion ? teal400 : lightBlack
+    color: promotion ? COLOR_SECONDARY : COLOR_FG_SECONDARY
   };
   return (
     <span>

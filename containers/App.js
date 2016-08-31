@@ -25,7 +25,8 @@ import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
-import { deepOrange800, teal400 } from 'material-ui/styles/colors';
+
+import { COLOR_PRIMARY, COLOR_SECONDARY } from '../helpers/ui/colors';
 
 class App extends Component {
 
@@ -70,17 +71,17 @@ class App extends Component {
     return (
       <Paper style={paperStyles}>
 
-        <AppBar style={{backgroundColor: deepOrange800}} title={headerTitle} iconElementLeft={HeaderLeftIcon} iconElementRight={HeaderRightIcon} />
+        <AppBar style={{backgroundColor: COLOR_PRIMARY}} title={headerTitle} iconElementLeft={HeaderLeftIcon} iconElementRight={HeaderRightIcon} />
 
         { isFetching ? DisplayLoader : (error ? DisplayErrorMessage : DisplayShelf) }
 
         <Drawer open={this.props.ui.navOpen} docked={false}>
-          <AppBar title="Rayons" style={{ backgroundColor: deepOrange800 }} iconElementLeft={NavigationCloseButton} />
+          <AppBar title="Rayons" style={{ backgroundColor: COLOR_PRIMARY }} iconElementLeft={NavigationCloseButton} />
           <Navigation selected={selectedShelf} handleShelfChange={this.handleShelfChange} />
         </Drawer>
 
         <Drawer open={this.props.ui.cartOpen} width={340} openSecondary={true}>
-          <AppBar title="Panier" style={{ backgroundColor: teal400 }} showMenuIconButton={false} iconElementRight={ShoppingCartCloseButton} />
+          <AppBar title="Panier" style={{ backgroundColor: COLOR_SECONDARY }} showMenuIconButton={false} iconElementRight={ShoppingCartCloseButton} />
           <ShoppingCart items={cart} handleRemoveFromCart={this.handleRemoveFromCart} />
         </Drawer>
 

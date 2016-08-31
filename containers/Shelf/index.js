@@ -24,7 +24,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Snackbar from 'material-ui/Snackbar';
 import FiltersIcon from 'material-ui/svg-icons/content/filter-list';
 
-import {blueGrey700} from 'material-ui/styles/colors';
+import { COLOR_TERTIARY } from '../../helpers/ui/colors';
 
 class Shelf extends Component {
 
@@ -54,7 +54,7 @@ class Shelf extends Component {
       <MenuItem key={i}>
         <Checkbox
           style={{padding:'8px 0'}}
-          iconStyle={{fill: blueGrey700}}
+          iconStyle={{fill: COLOR_TERTIARY}}
           inputStyle={{top: 0}}
           label={`${c} — [${filters.categories[c]}]`}
           defaultChecked={this.props.categoryFilters.indexOf(c) >= 0}
@@ -69,7 +69,7 @@ class Shelf extends Component {
           <ShelfInfoBar totalProducts={total} breadcrumb={`${district} > ${aisle} > ${name}`} />
           <div style={{paddingRight: 8}}>
             <FlatButton
-              style={{color: blueGrey700}}
+              style={{color: COLOR_TERTIARY}}
               label="Filtres"
               onTouchTap={this.handleTouchTap}
               icon={<FiltersIcon />}
@@ -91,7 +91,7 @@ class Shelf extends Component {
           message={this.state.snackbarMessage}
           autoHideDuration={4000}
           onRequestClose={this.handleSnackbarRequestClose}
-          bodyStyle={{backgroundColor: blueGrey700}}
+          bodyStyle={{backgroundColor: COLOR_TERTIARY}}
         />
       </List>
     )
