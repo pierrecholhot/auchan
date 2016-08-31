@@ -13,7 +13,7 @@ import Avatar from 'material-ui/Avatar'
 import AddShoppingCartIcon from 'material-ui/svg-icons/action/add-shopping-cart'
 import AlarmAddIcon from 'material-ui/svg-icons/action/alarm-add'
 import IconButton from 'material-ui/IconButton'
-import { COLOR_SECONDARY } from '../../helpers/ui/colors'
+import { COLOR_SECONDARY } from '../../ui/colors'
 
 export const ShelfProduct = ({prd, handleAddCart}) => {
 

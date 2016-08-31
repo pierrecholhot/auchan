@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react'
+import React, { PropTypes } from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
 
 export const ErrorMessage = ({text}) => {

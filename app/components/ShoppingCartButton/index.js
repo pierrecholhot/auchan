@@ -4,7 +4,7 @@ import Chip from 'material-ui/Chip'
 import Avatar from 'material-ui/Avatar'
 
 import ShoppingCartIcon from 'material-ui/svg-icons/action/shopping-cart'
-import { COLOR_BG_SECONDARY, COLOR_SECONDARY } from '../../helpers/ui/colors'
+import { COLOR_BG_SECONDARY, COLOR_SECONDARY } from '../../ui/colors'
 
 export const ShoppingCartButton = ({total, handleOpenCart}) => {
   return (

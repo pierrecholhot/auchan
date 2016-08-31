@@ -4,7 +4,7 @@ import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import Subheader from 'material-ui/Subheader'
 import DeleteIcon from 'material-ui/svg-icons/content/remove-circle-outline'
-import { COLOR_FG_SECONDARY, COLOR_TERTIARY } from '../../helpers/ui/colors'
+import { COLOR_FG_SECONDARY, COLOR_TERTIARY } from '../../ui/colors'
 
 export const ShoppingCart = ({items, handleRemoveFromCart}) => {
 

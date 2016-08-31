@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import _ from 'lodash';
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import _ from 'lodash'
 
 import {
   selectShelf, fetchShelfIfNeeded,
@@ -26,13 +26,17 @@ import IconButton from 'material-ui/IconButton'
 import MenuIcon from 'material-ui/svg-icons/navigation/menu'
 import CloseIcon from 'material-ui/svg-icons/navigation/close'
 
-import { COLOR_PRIMARY, COLOR_SECONDARY } from '../helpers/ui/colors'
+import { COLOR_PRIMARY, COLOR_SECONDARY } from '../ui/colors'
 
 class App extends Component {
 
   constructor(props) {
     super(props)
-    _.bindAll(this, 'handleShelfChange', 'handleOpenNav', 'handleCloseNav', 'handleOpenCart', 'handleCloseCart', 'handleRemoveFromCart')
+    _.bindAll(this,
+      'handleShelfChange',
+      'handleOpenNav', 'handleCloseNav',
+      'handleOpenCart', 'handleCloseCart', 'handleRemoveFromCart'
+    )
   }
 
   componentDidMount() {
