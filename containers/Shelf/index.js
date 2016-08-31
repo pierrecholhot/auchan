@@ -63,12 +63,10 @@ class Shelf extends Component {
       </MenuItem>
     )
 
-    const breadcrumb = `${district} > ${aisle} > ${name}`;
-
     return (
       <List>
         <Subheader style={{display: 'flex'}}>
-          <ShelfInfoBar totalProducts={total} breadcrumb={breadcrumb} />
+          <ShelfInfoBar totalProducts={total} breadcrumb={`${district} > ${aisle} > ${name}`} />
           <div style={{paddingRight: 8}}>
             <FlatButton
               style={{color: blueGrey700}}
