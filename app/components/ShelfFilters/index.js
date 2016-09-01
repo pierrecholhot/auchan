@@ -30,7 +30,7 @@ export const ShelfFilters = ({
     </MenuItem>
   )
 
-  return (
+  return categories.length ? (
     <div style={{paddingRight: 8}}>
       <FlatButton
         style={{color: COLOR_TERTIARY}}
@@ -48,9 +48,14 @@ export const ShelfFilters = ({
         <Menu>{ categories }</Menu>
       </Popover>
     </div>
-  )
+  ) : null
 }
 
 ShelfFilters.propTypes = {
-
+  filters: PropTypes.object.isRequired,
+  popoverState: PropTypes.object.isRequired,
+  categoryFilters: PropTypes.array.isRequired,
+  handleFilterToggle: PropTypes.func.isRequired,
+  handlePopoverTrigger: PropTypes.func.isRequired,
+  handlePopoverRequestClose: PropTypes.func.isRequired,
 }
