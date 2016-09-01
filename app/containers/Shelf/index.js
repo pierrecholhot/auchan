@@ -1,12 +1,13 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 
 import {
   addToCart,
-  addCategoryFilter,
-  removeCategoryFilter,
   addAllCategoryFilters,
-  removeAllCategoryFilters
+  addCategoryFilter, removeCategoryFilter,
+  openFiltersPopover, closeFiltersPopover,
+  openSnackbar, closeSnackbar,
 } from '@actions'
 
 import {
@@ -39,14 +40,6 @@ class Shelf extends Component {
       'handlePopoverRequestClose',
       'handleSnackbarRequestClose',
     )
-
-    // TODO: create a reducer
-    this.state = {
-      anchorEl: null,
-      filtersPopoverOpen: false,
-      snackbarOpen: false,
-      snackbarMessage: ""
-    }
   }
 
   componentDidMount(){
@@ -55,8 +48,8 @@ class Shelf extends Component {
   }
 
   render() {
-    const { products, district, aisle, name, filters } = this.props
-    const { filtersPopoverOpen, anchorEl } = this.state
+    const { products, district, aisle, name, filters, ui } = this.props
+    const { filtersPopoverOpen, filtersPopoverAnchorEl } = ui
 
     return (
       <List>
@@ -67,7 +60,7 @@ class Shelf extends Component {
           />
           <ShelfFilters
             filters={filters}
-            popoverState={{ open: filtersPopoverOpen, anchorEl: anchorEl }}
+            popoverState={{ open: filtersPopoverOpen, anchorEl: filtersPopoverAnchorEl }}
             handlePopoverTrigger={this.handlePopoverTrigger}
             categoryFilters={this.props.categoryFilters}
             handlePopoverRequestClose={this.handlePopoverRequestClose}
@@ -86,8 +79,8 @@ class Shelf extends Component {
         <Snackbar
           autoHideDuration={4000}
           bodyStyle={{backgroundColor: COLOR_TERTIARY}}
-          open={this.state.snackbarOpen}
-          message={this.state.snackbarMessage}
+          open={this.props.ui.snackbarOpen}
+          message={this.props.ui.snackbarMessage}
           onRequestClose={this.handleSnackbarRequestClose}
         />
       </List>
@@ -96,22 +89,23 @@ class Shelf extends Component {
 
 
   handleAddToCart(id, name, price){
+    const {dispatch} = this.props
     return (e) => {
-      this.props.dispatch(addToCart({id, name, price}))
-      this.setState({ snackbarOpen: true, snackbarMessage: `« ${name} » ajouté au panier` })
+      dispatch(addToCart({id, name, price}))
+      dispatch(openSnackbar(`« ${name} » ajouté au panier`))
     }
   }
 
   handlePopoverTrigger(e) {
-    this.setState({ filtersPopoverOpen: true, anchorEl: e.currentTarget })
+    this.props.dispatch(openFiltersPopover(e.currentTarget))
   }
 
   handlePopoverRequestClose(){
-    this.setState({ filtersPopoverOpen: false })
+    this.props.dispatch(closeFiltersPopover())
   }
 
   handleSnackbarRequestClose(){
-    this.setState({ snackbarOpen: false })
+    this.props.dispatch(closeSnackbar())
   }
 
   handleFilterToggle(e, checked){
@@ -128,14 +122,14 @@ Shelf.propTypes = {
   dispatch: PropTypes.func.isRequired
 }
 
-function mapStateToProps(state){
-  const { categoryFilters, shelves, selectedShelf } = state
+function mapStateToProps({ categoryFilters, shelves, selectedShelf, ui }){
   const filtered = shelves[selectedShelf].items.filter((p) => {
     // never hide those who don't have a category
     if (!p.category) { return true }
-    return (categoryFilters.indexOf(p.category) >= 0)
-  });
+    return _.includes(categoryFilters, p.category)
+  })
   return {
+    ui,
     categoryFilters,
     products: filtered
   }

@@ -12,7 +12,7 @@ const initialState = {
   district: "",
   aisle: "",
   filters: {}
-};
+}
 
 function shelf(state = initialState, action) {
   switch (action.type) {

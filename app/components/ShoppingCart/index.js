@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { formatPrice } from '@helpers'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import Subheader from 'material-ui/Subheader'
@@ -18,7 +19,7 @@ export const ShoppingCart = ({items, handleRemoveFromCart}) => {
       innerDivStyle={{paddingLeft: 56}}
       value={id}
       primaryText={<span style={labelStyles}>{name}</span>}
-      secondaryText={<small style={{color: COLOR_FG_SECONDARY}}>{price/100}€</small>}
+      secondaryText={<small style={{color: COLOR_FG_SECONDARY}}>{formatPrice(price)}</small>}
     />
   )
 
@@ -33,7 +34,7 @@ export const ShoppingCart = ({items, handleRemoveFromCart}) => {
       </Menu>
       <Subheader>
         <div style={{marginRight: 16, borderTop: '1px solid #ccc'}}>
-          Total de vos achats <strong style={{float: 'right', color: COLOR_TERTIARY, fontSize: '1.2em'}}>{totalPrice/100}&euro;</strong>
+          Total de vos achats <strong style={{float: 'right', color: COLOR_TERTIARY, fontSize: '1.2em'}}>{formatPrice(totalPrice)}</strong>
         </div>
       </Subheader>
     </div>

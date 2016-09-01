@@ -13,12 +13,12 @@ function categoryFilters(state = initialState, action) {
       return [...state, action.name]
     case REMOVE_CATEGORY_FILTER:
       return state.filter(function(item){
-        return item !== action.name;
+        return item !== action.name
       })
     case ADD_ALL_CATEGORY_FILTERS:
-      return action.list;
+      return action.list
     case REMOVE_ALL_CATEGORY_FILTERS:
-      return [];
+      return []
     default:
       return state
   }

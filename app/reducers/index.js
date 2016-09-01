@@ -12,6 +12,6 @@ const rootReducer = combineReducers({
   shelves,
   selectedShelf,
   categoryFilters
-});
+})
 
 export default rootReducer

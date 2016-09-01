@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import { COLOR_FG_SECONDARY, COLOR_SECONDARY } from '@ui/colors'
+import { formatPrice } from '@helpers'
 
 export const ProductPrice = ({price, promotion}) => {
   const styles = {
@@ -8,7 +9,7 @@ export const ProductPrice = ({price, promotion}) => {
   return (
     <span>
       <b>Prix: </b>
-      <span style={styles}>{price/100}&euro; { promotion && <strong>(En promotion jusqu'au { promotion.end_date.split('-').reverse().join('/') })</strong> }</span>
+      <span style={styles}>{formatPrice(price)} { promotion && <strong>(En promotion jusqu'au { promotion.end_date.split('-').reverse().join('/') })</strong> }</span>
     </span>
   )
 }
