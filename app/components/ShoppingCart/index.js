@@ -5,6 +5,8 @@ import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import Subheader from 'material-ui/Subheader'
 import DeleteIcon from 'material-ui/svg-icons/content/remove-circle-outline'
+
+import i18n from '@ui/i18n'
 import styles from './styles'
 
 export const ShoppingCart = ({items, handleRemoveFromCart}) => {
@@ -18,7 +20,7 @@ export const ShoppingCart = ({items, handleRemoveFromCart}) => {
       innerDivStyle={styles.itemInner}
       value={id}
       primaryText={<span style={styles.labelPrimary}>{name}</span>}
-      secondaryText={<small style={styles.labelSecondary}>{formatPrice(price)}</small>}
+      secondaryText={<small style={styles.labelSecondary}>{ formatPrice(price) }</small>}
     />
   )
 
@@ -28,12 +30,12 @@ export const ShoppingCart = ({items, handleRemoveFromCart}) => {
 
   return (
     <div>
-      <Menu style={{width: 320}} onItemTouchTap={onItemTouchTap}>
-        { cartItems.length ? cartItems : <MenuItem primaryText='Votre panier est vide :-(' disabled={true} style={styles.cartEmpty} /> }
+      <Menu style={styles.menu} onItemTouchTap={onItemTouchTap}>
+        { cartItems.length ? cartItems : <MenuItem primaryText={i18n.cartEmpty} disabled={true} style={styles.cartEmpty} /> }
       </Menu>
       <Subheader>
         <div style={styles.rootTotal}>
-          Total de vos achats <strong style={styles.labelTotal}>{formatPrice(totalPrice)}</strong>
+          {i18n.yourTotal} <strong style={styles.labelTotal}>{ formatPrice(totalPrice) }</strong>
         </div>
       </Subheader>
     </div>

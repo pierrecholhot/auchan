@@ -26,6 +26,8 @@ import Checkbox from 'material-ui/Checkbox'
 import FlatButton from 'material-ui/FlatButton'
 import MenuItem from 'material-ui/MenuItem'
 import FiltersIcon from 'material-ui/svg-icons/content/filter-list'
+
+import i18n from '@ui/i18n'
 import styles from './styles'
 
 class Shelf extends Component {
@@ -90,7 +92,7 @@ class Shelf extends Component {
     const {dispatch} = this.props
     return (e) => {
       dispatch(addToCart({id, name, price}))
-      dispatch(openSnackbar(`« ${name} » ajouté au panier`))
+      dispatch(openSnackbar(`« ${name} » ${i18n.addedToCart}`))
     }
   }
 

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
+import i18n from '@ui/i18n'
 import styles from './styles'
 
 export const Navigation = ({ selected, handleShelfChange }) => {
@@ -17,7 +18,7 @@ export const Navigation = ({ selected, handleShelfChange }) => {
             key={i}
             value={number}
             checked={number.toString() === selected}
-            primaryText={`Rayon #${number}`}
+            primaryText={`${i18n.shelf} #${number}`}
           />
         )
       }

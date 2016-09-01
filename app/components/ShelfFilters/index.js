@@ -6,6 +6,8 @@ import MenuItem from 'material-ui/MenuItem'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import FiltersIcon from 'material-ui/svg-icons/content/filter-list'
+
+import i18n from '@ui/i18n'
 import styles from './styles'
 
 export const ShelfFilters = ({
@@ -35,7 +37,7 @@ export const ShelfFilters = ({
     <div style={styles.categoriesWrapper}>
       <FlatButton
         style={styles.categoriesTrigger}
-        label="Filtres"
+        label={i18n.filters}
         onTouchTap={handlePopoverTrigger}
         icon={<FiltersIcon />}
       />

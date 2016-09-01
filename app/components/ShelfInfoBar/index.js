@@ -1,14 +1,14 @@
 import React, {PropTypes} from 'react'
+import i18n from '@ui/i18n'
 import styles from './styles'
 
 export const ShelfInfoBar = ({totalProducts, breadcrumb}) => {
 
-  const noProducts = "Aucun produit"
-  const numberOfProducts = totalProducts > 1 ? `${totalProducts} produits` : '1 produit'
+  const numberOfProducts = totalProducts > 1 ? `${totalProducts} ${i18n.products}` : i18n.oneProduct
 
   return (
     <span style={styles.root}>
-      { totalProducts ? numberOfProducts : noProducts } dans votre rayon ( {breadcrumb} )
+      { totalProducts ? numberOfProducts : i18n.noProducts } { i18n.inShelf } ( {breadcrumb} )
     </span>
   )
 }

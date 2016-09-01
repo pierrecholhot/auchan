@@ -26,6 +26,7 @@ import IconButton from 'material-ui/IconButton'
 import MenuIcon from 'material-ui/svg-icons/navigation/menu'
 import CloseIcon from 'material-ui/svg-icons/navigation/close'
 
+import i18n from '@ui/i18n'
 import styles from './styles'
 
 class App extends Component {
@@ -59,14 +60,14 @@ class App extends Component {
     const { selectedShelf, name, products, district, aisle, isFetching, error, filters, cart } = this.props
 
     // TODO: move to config.json
-    const headerTitle = "AuchanDirect.fr"
+    const headerTitle = i18n.brand
 
     const HeaderLeftIcon = <IconButton onTouchTap={this.handleOpenNav}><MenuIcon /></IconButton>
     const HeaderRightIcon = <ShoppingCartButton handleOpenCart={this.handleOpenCart} total={cart.length} />
     const NavigationCloseButton = <IconButton onTouchTap={this.handleCloseNav}><CloseIcon /></IconButton>
     const ShoppingCartCloseButton = <IconButton onTouchTap={this.handleCloseCart}><CloseIcon /></IconButton>
     const DisplayLoader = <Loader />
-    const DisplayErrorMessage = <ErrorMessage text={"Une erreur technique est survenue"} />
+    const DisplayErrorMessage = <ErrorMessage text={i18n.globalError} />
     const DisplayShelf = <Shelf products={products} name={name} district={district} aisle={aisle} filters={filters} />
 
     return (
@@ -77,12 +78,12 @@ class App extends Component {
         { isFetching ? DisplayLoader : (error ? DisplayErrorMessage : DisplayShelf) }
 
         <Drawer open={this.props.ui.navOpen} docked={false}>
-          <AppBar title="Rayons" style={styles.navAppBar} iconElementLeft={NavigationCloseButton} />
+          <AppBar title={i18n.shelves} style={styles.navAppBar} iconElementLeft={NavigationCloseButton} />
           <Navigation selected={selectedShelf} handleShelfChange={this.handleShelfChange} />
         </Drawer>
 
         <Drawer open={this.props.ui.cartOpen} width={340} openSecondary={true}>
-          <AppBar title="Panier" style={styles.cartAppBar} showMenuIconButton={false} iconElementRight={ShoppingCartCloseButton} />
+          <AppBar title={i18n.cart} style={styles.cartAppBar} showMenuIconButton={false} iconElementRight={ShoppingCartCloseButton} />
           <ShoppingCart items={cart} handleRemoveFromCart={this.handleRemoveFromCart} />
         </Drawer>
 

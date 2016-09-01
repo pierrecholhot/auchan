@@ -25,5 +25,8 @@ export default {
   },
   cartEmpty: {
     textAlign: 'center'
+  },
+  menu: {
+    width: 320
   }
 }
