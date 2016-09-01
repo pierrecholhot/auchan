@@ -119,7 +119,10 @@ Shelf.propTypes = {
   products: PropTypes.array.isRequired,
   name: PropTypes.string.isRequired,
   district: PropTypes.string.isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  ui: PropTypes.object.isRequired,
+  filters: PropTypes.object,
+  categoryFilters: PropTypes.array
 }
 
 function mapStateToProps({ categoryFilters, shelves, selectedShelf, ui }){

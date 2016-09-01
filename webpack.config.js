@@ -27,6 +27,10 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin()
   ],
+  eslint: {
+    configFile: './.eslintrc',
+    failOnError: true
+  },
   module: {
     loaders: [
       {
