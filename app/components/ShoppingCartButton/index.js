@@ -4,18 +4,18 @@ import Chip from 'material-ui/Chip'
 import Avatar from 'material-ui/Avatar'
 
 import ShoppingCartIcon from 'material-ui/svg-icons/action/shopping-cart'
-import { COLOR_BG_SECONDARY, COLOR_SECONDARY } from '@ui/colors'
+import styles from './styles'
 
 export const ShoppingCartButton = ({total, handleOpenCart}) => {
   return (
     <Chip
-      style={{margin: '8px 4px 0 0'}}
+      style={styles.root}
       onTouchTap={handleOpenCart}
-      backgroundColor={COLOR_BG_SECONDARY}
+      backgroundColor={styles.rootBgColor}
     >
       <Avatar
-        color={COLOR_BG_SECONDARY}
-        backgroundColor={COLOR_SECONDARY}
+        color={styles.avatarColor}
+        backgroundColor={styles.avatarBgColor}
         icon={<ShoppingCartIcon />}
       />
       { total }

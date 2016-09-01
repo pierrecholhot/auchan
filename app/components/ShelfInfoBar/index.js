@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import styles from './styles'
 
 export const ShelfInfoBar = ({totalProducts, breadcrumb}) => {
 
@@ -6,7 +7,7 @@ export const ShelfInfoBar = ({totalProducts, breadcrumb}) => {
   const numberOfProducts = totalProducts > 1 ? `${totalProducts} produits` : '1 produit'
 
   return (
-    <span style={{flex: '1 0 0'}}>
+    <span style={styles.root}>
       { totalProducts ? numberOfProducts : noProducts } dans votre rayon ( {breadcrumb} )
     </span>
   )

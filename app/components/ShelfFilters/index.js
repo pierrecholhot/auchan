@@ -6,7 +6,7 @@ import MenuItem from 'material-ui/MenuItem'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import FiltersIcon from 'material-ui/svg-icons/content/filter-list'
-import { COLOR_TERTIARY } from '@ui/colors'
+import styles from './styles'
 
 export const ShelfFilters = ({
   filters,
@@ -17,23 +17,24 @@ export const ShelfFilters = ({
   handlePopoverRequestClose,
 }) => {
 
-  const categories = Object.keys(filters.categories).map((c, i) =>
-    <MenuItem key={i}>
-      <Checkbox
-        style={{padding:'8px 0'}}
-        iconStyle={{fill: COLOR_TERTIARY}}
-        inputStyle={{top: 0}}
-        label={`${c} — [${filters.categories[c]}]`}
-        defaultChecked={categoryFilters.indexOf(c) >= 0}
-        onCheck={handleFilterToggle}
-      />
-    </MenuItem>
-  )
+  const categories = Object.keys(filters.categories)
+    .map((c, i) =>
+      <MenuItem key={i}>
+        <Checkbox
+          style={styles.checkbox}
+          iconStyle={styles.checkboxSvgIcon}
+          inputStyle={styles.checkboxInput}
+          label={`${c} — [${filters.categories[c]}]`}
+          defaultChecked={categoryFilters.indexOf(c) >= 0}
+          onCheck={handleFilterToggle}
+        />
+      </MenuItem>
+    )
 
   return categories.length ? (
-    <div style={{paddingRight: 8}}>
+    <div style={styles.categoriesWrapper}>
       <FlatButton
-        style={{color: COLOR_TERTIARY}}
+        style={styles.categoriesTrigger}
         label="Filtres"
         onTouchTap={handlePopoverTrigger}
         icon={<FiltersIcon />}

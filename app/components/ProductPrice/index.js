@@ -1,15 +1,16 @@
 import React, {PropTypes} from 'react'
-import { COLOR_FG_SECONDARY, COLOR_SECONDARY } from '@ui/colors'
-import { formatPrice } from '@helpers'
+import { formatPrice, frenchifyDate } from '@helpers'
+import styles from './styles'
 
 export const ProductPrice = ({price, promotion}) => {
-  const styles = {
-    color: promotion ? COLOR_SECONDARY : COLOR_FG_SECONDARY
-  }
+
+  const rootStyles = styles[promotion ? 'promo' : 'price']
+  const displayPromotion = promotion && <strong>(En promotion jusqu'au { frenchifyDate(promotion.end_date) })</strong>
+
   return (
     <span>
       <b>Prix: </b>
-      <span style={styles}>{formatPrice(price)} { promotion && <strong>(En promotion jusqu'au { promotion.end_date.split('-').reverse().join('/') })</strong> }</span>
+      <span style={rootStyles}>{formatPrice(price)} {displayPromotion}</span>
     </span>
   )
 }

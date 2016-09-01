@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react'
-import { COLOR_FG_SECONDARY } from '@ui/colors'
+import styles from './styles'
 
 export const ProductCategory = ({category}) => {
-  return <span><b>Catégorie</b>: <span style={{color: COLOR_FG_SECONDARY}}>{category}</span></span>
+  return <span><b>Catégorie</b>: <span style={styles.text}>{category}</span></span>
 }
 
 ProductCategory.propTypes = {

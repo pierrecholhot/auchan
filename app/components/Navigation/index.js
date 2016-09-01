@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
+import styles from './styles'
 
 export const Navigation = ({ selected, handleShelfChange }) => {
 
@@ -9,7 +10,8 @@ export const Navigation = ({ selected, handleShelfChange }) => {
   }
 
   return (
-    <Menu onItemTouchTap={handleTouchTap} style={{width: '180px'}}>{
+    <Menu onItemTouchTap={handleTouchTap} style={styles.root}>
+      {
         Array.apply(null, {length: 25}).map(Number.call, Number).map((number, i) =>
           <MenuItem
             key={i}
@@ -18,7 +20,8 @@ export const Navigation = ({ selected, handleShelfChange }) => {
             primaryText={`Rayon #${number}`}
           />
         )
-    }</Menu>
+      }
+    </Menu>
   )
 }
 

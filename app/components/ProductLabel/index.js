@@ -1,8 +1,8 @@
 import React, {PropTypes} from 'react'
-import { COLOR_FG_SECONDARY } from '@ui/colors'
+import styles from './styles'
 
 export const ProductLabel = ({name, portion, brand}) => {
-  return <span>{name} <small>({portion.toUpperCase()})</small> <small style={{color: COLOR_FG_SECONDARY}}> – {brand}</small></span>
+  return <span>{name} <small style={styles.portion}>({portion})</small> <small style={styles.brand}> – {brand}</small></span>
 }
 
 ProductLabel.propTypes = {

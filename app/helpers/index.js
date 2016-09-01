@@ -7,3 +7,7 @@ export const countByKey = (products, key) => {
 export const formatPrice = (price) => {
   return [price/100, '€'].join(' ')
 }
+
+export const frenchifyDate = (date) => {
+  return date.split('-').reverse().join('/')
+}
