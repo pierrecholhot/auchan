@@ -26,7 +26,7 @@ import IconButton from 'material-ui/IconButton'
 import MenuIcon from 'material-ui/svg-icons/navigation/menu'
 import CloseIcon from 'material-ui/svg-icons/navigation/close'
 
-import { COLOR_PRIMARY, COLOR_SECONDARY } from '@ui/colors'
+import styles from './styles'
 
 class App extends Component {
 
@@ -61,9 +61,6 @@ class App extends Component {
     // TODO: move to config.json
     const headerTitle = "AuchanDirect.fr"
 
-    // TODO: postcss
-    const paperStyles = { margin: "0 auto", minHeight: 300 }
-
     const HeaderLeftIcon = <IconButton onTouchTap={this.handleOpenNav}><MenuIcon /></IconButton>
     const HeaderRightIcon = <ShoppingCartButton handleOpenCart={this.handleOpenCart} total={cart.length} />
     const NavigationCloseButton = <IconButton onTouchTap={this.handleCloseNav}><CloseIcon /></IconButton>
@@ -73,19 +70,19 @@ class App extends Component {
     const DisplayShelf = <Shelf products={products} name={name} district={district} aisle={aisle} filters={filters} />
 
     return (
-      <Paper style={paperStyles}>
+      <Paper style={styles.root}>
 
-        <AppBar style={{backgroundColor: COLOR_PRIMARY}} title={headerTitle} iconElementLeft={HeaderLeftIcon} iconElementRight={HeaderRightIcon} />
+        <AppBar style={styles.appBar} title={headerTitle} iconElementLeft={HeaderLeftIcon} iconElementRight={HeaderRightIcon} />
 
         { isFetching ? DisplayLoader : (error ? DisplayErrorMessage : DisplayShelf) }
 
         <Drawer open={this.props.ui.navOpen} docked={false}>
-          <AppBar title="Rayons" style={{ backgroundColor: COLOR_PRIMARY }} iconElementLeft={NavigationCloseButton} />
+          <AppBar title="Rayons" style={styles.navAppBar} iconElementLeft={NavigationCloseButton} />
           <Navigation selected={selectedShelf} handleShelfChange={this.handleShelfChange} />
         </Drawer>
 
         <Drawer open={this.props.ui.cartOpen} width={340} openSecondary={true}>
-          <AppBar title="Panier" style={{ backgroundColor: COLOR_SECONDARY }} showMenuIconButton={false} iconElementRight={ShoppingCartCloseButton} />
+          <AppBar title="Panier" style={styles.cartAppBar} showMenuIconButton={false} iconElementRight={ShoppingCartCloseButton} />
           <ShoppingCart items={cart} handleRemoveFromCart={this.handleRemoveFromCart} />
         </Drawer>
 

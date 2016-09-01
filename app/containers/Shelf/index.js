@@ -26,8 +26,7 @@ import Checkbox from 'material-ui/Checkbox'
 import FlatButton from 'material-ui/FlatButton'
 import MenuItem from 'material-ui/MenuItem'
 import FiltersIcon from 'material-ui/svg-icons/content/filter-list'
-
-import { COLOR_TERTIARY } from '@ui/colors'
+import styles from './styles'
 
 class Shelf extends Component {
 
@@ -53,7 +52,7 @@ class Shelf extends Component {
 
     return (
       <List>
-        <Subheader style={{display: 'flex'}}>
+        <Subheader style={styles.subheader}>
           <ShelfInfoBar
             totalProducts={products.length}
             breadcrumb={`${district} > ${aisle} > ${name}`}
@@ -78,7 +77,7 @@ class Shelf extends Component {
         }
         <Snackbar
           autoHideDuration={4000}
-          bodyStyle={{backgroundColor: COLOR_TERTIARY}}
+          bodyStyle={styles.notification}
           open={this.props.ui.snackbarOpen}
           message={this.props.ui.snackbarMessage}
           onRequestClose={this.handleSnackbarRequestClose}
@@ -86,7 +85,6 @@ class Shelf extends Component {
       </List>
     )
   }
-
 
   handleAddToCart(id, name, price){
     const {dispatch} = this.props
@@ -109,7 +107,7 @@ class Shelf extends Component {
   }
 
   handleFilterToggle(e, checked){
-    // TODO: find a cleaner way to store the filter name
+    // TODO: find a cleaner way to store/parse the filter name
     const v = e.nativeEvent.target.nextSibling.textContent.split(' — ')[0]
     this.props.dispatch(checked ? addCategoryFilter(v) : removeCategoryFilter(v))
   }
