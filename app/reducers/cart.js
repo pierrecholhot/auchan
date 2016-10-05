@@ -11,11 +11,12 @@ function cart(state = initialState, action) {
       return [...state, {
         id: action.id,
         name: action.name,
-        price: action.price
+        price: action.price,
+				uid: action.uid
       }]
     case REMOVE_FROM_CART:
       return state.filter(function(item){
-        return item.id !== action.id
+        return item.uid !== action.uid
       })
     default:
       return state

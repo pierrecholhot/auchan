@@ -18,6 +18,7 @@
   "homepage": "http://localhost:3000/",
   "dependencies": {
     "babel-polyfill": "^6.3.14",
+    "guid": "0.0.12",
     "isomorphic-fetch": "^2.1.1",
     "lodash": "^4.15.0",
     "material-ui": "^0.15.4",

@@ -30,6 +30,8 @@ import FiltersIcon from 'material-ui/svg-icons/content/filter-list'
 import i18n from '@ui/i18n'
 import styles from './styles'
 
+let hasSpace = 0
+
 class Shelf extends Component {
 
   constructor(props) {
@@ -78,7 +80,7 @@ class Shelf extends Component {
           )
         }
         <Snackbar
-          autoHideDuration={4000}
+          autoHideDuration={3000}
           bodyStyle={styles.notification}
           open={this.props.ui.snackbarOpen}
           message={this.props.ui.snackbarMessage}
@@ -88,11 +90,14 @@ class Shelf extends Component {
     )
   }
 
-  handleAddToCart(id, name, price){
+  handleAddToCart(id, name, price, uid){
     const {dispatch} = this.props
     return (e) => {
-      dispatch(addToCart({id, name, price}))
-      dispatch(openSnackbar(`« ${name} » ${i18n.addedToCart}`))
+			hasSpace = !hasSpace;
+			const extra = !hasSpace ? ' ' : '';
+      dispatch(addToCart({id, name, price, uid}))
+      dispatch(closeSnackbar())
+      dispatch(openSnackbar(`« ${name} » ${i18n.addedToCart} ${extra}`))
     }
   }
 

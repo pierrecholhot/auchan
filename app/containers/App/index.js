@@ -105,8 +105,8 @@ class App extends Component {
     this.props.dispatch(closeCart())
   }
 
-  handleRemoveFromCart(id){
-    this.props.dispatch(removeFromCart(id))
+  handleRemoveFromCart(uid){
+    this.props.dispatch(removeFromCart(uid))
   }
 
   handleOpenNav() {

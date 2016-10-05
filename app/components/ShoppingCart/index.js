@@ -13,12 +13,12 @@ export const ShoppingCart = ({items, handleRemoveFromCart}) => {
 
   const totalPrice = items.reduce((total, item) => (item.price + total), 0)
 
-  const cartItems = items.map(({id, name, price}, i) =>
+  const cartItems = items.map(({id, name, price, uid}, i) =>
     <MenuItem
       key={i}
       leftIcon={<DeleteIcon color={styles.deleteIconColor} />}
       innerDivStyle={styles.itemInner}
-      value={id}
+      value={uid}
       primaryText={<span style={styles.labelPrimary}>{name}</span>}
       secondaryText={<small style={styles.labelSecondary}>{ formatPrice(price) }</small>}
     />
